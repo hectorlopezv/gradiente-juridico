@@ -13,23 +13,25 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Gradiente Jurídico | Propiedad intelectual y derecho de los negocios",
+  title: "Gradiente Jurídico | Propiedad Intelectual",
   description:
-    "Soluciones legales para proteger, estructurar y fortalecer negocios. Firma especializada en propiedad intelectual y derecho de los negocios.",
+    "Especialistas en Propiedad Intelectual. Protegemos tus ideas. Potenciamos tu futuro. Buenos Aires, Argentina.",
   keywords: [
     "propiedad intelectual",
-    "derecho de los negocios",
     "marcas",
-    "contratos",
+    "patentes",
+    "diseños industriales",
+    "derechos de autor",
     "abogados",
-    "México",
+    "Buenos Aires",
+    "Argentina",
   ],
   openGraph: {
     title: "Gradiente Jurídico",
     description:
-      "Soluciones legales para proteger, estructurar y fortalecer negocios.",
+      "Especialistas en Propiedad Intelectual. Protegemos tus ideas. Potenciamos tu futuro.",
     type: "website",
-    locale: "es_MX",
+    locale: "es_AR",
   },
 };
 

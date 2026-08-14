@@ -1,114 +1,96 @@
 import {
-  Briefcase,
-  FileText,
+  Circle,
+  Copyright,
   Handshake,
-  Megaphone,
-  Scale,
+  Lightbulb,
+  PenTool,
   Shield,
-  Compass,
-  FileCheck,
+  TrendingUp,
   type LucideIcon,
 } from "lucide-react";
 
-export interface PracticeArea {
-  number: string;
+export interface Service {
   title: string;
   description: string;
   icon: LucideIcon;
 }
 
-export interface WorkPrinciple {
-  number: string;
-  title: string;
-  description: string;
+export interface ValuePillar {
+  label: string;
   icon: LucideIcon;
 }
+
+export const contact = {
+  person: "Duvan Rambal",
+  email: "helenanovoac@gmail.com",
+  phone: "305 945 1119",
+  phoneIntl: "+57 305 945 1119",
+  whatsapp: "573059451119",
+  whatsappUrl: "https://wa.me/573059451119",
+  location: "Buenos Aires, Argentina",
+  locationDetail: "Atención presencial y online",
+};
+
+export const brand = {
+  tagline: "Especialistas en Propiedad Intelectual.",
+  taglineHighlight: "Protegemos tus ideas. Potenciamos tu futuro.",
+  missionBanner: "TU INNOVACIÓN NUESTRA MISIÓN",
+  location: contact.location,
+  locationDetail: contact.locationDetail,
+  email: contact.email,
+  phone: contact.phoneIntl,
+  contactPerson: contact.person,
+  whatsappUrl: contact.whatsappUrl,
+  website: "www.gradientejuridico.com.ar",
+};
 
 export const navLinks = [
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Áreas de práctica", href: "#areas" },
-  { label: "Nuestra forma de trabajar", href: "#forma-de-trabajar" },
+  { label: "Servicios", href: "#servicios" },
+  { label: "¿Por qué elegirnos?", href: "#por-que-elegirnos" },
   { label: "Contacto", href: "#contacto" },
 ];
 
-export const practiceAreas: PracticeArea[] = [
-  {
-    number: "01",
-    title: "Propiedad intelectual y activos intangibles",
-    description:
-      "Marcas, derechos de autor, software, diseños industriales, secretos empresariales, licencias y cesiones.",
-    icon: Shield,
-  },
-  {
-    number: "02",
-    title: "Contratos y relaciones comerciales",
-    description:
-      "Licencias, confidencialidad, distribución, colaboración, desarrollo de software y contratación comercial.",
-    icon: FileText,
-  },
-  {
-    number: "03",
-    title: "Sociedades y emprendimiento",
-    description:
-      "Constitución de sociedades, acuerdos de accionistas y fundadores, organización societaria y preparación para inversión.",
-    icon: Briefcase,
-  },
-  {
-    number: "04",
-    title: "Competencia, consumo y publicidad",
-    description:
-      "Revisión de campañas, promociones, información al consumidor, competencia desleal y cumplimiento publicitario.",
-    icon: Megaphone,
-  },
-  {
-    number: "05",
-    title: "Controversias y defensa jurídica",
-    description:
-      "Oposiciones, recursos, cancelaciones, nulidades, infracciones de propiedad intelectual y actuaciones ante autoridades.",
-    icon: Scale,
-  },
+export const valuePillars: ValuePillar[] = [
+  { label: "Protección", icon: Shield },
+  { label: "Innovación", icon: Lightbulb },
+  { label: "Valor", icon: TrendingUp },
 ];
 
-export const workPrinciples: WorkPrinciple[] = [
+export const services: Service[] = [
   {
-    number: "1",
-    title: "Visión jurídica y empresarial",
+    title: "Registro de Marcas",
     description:
-      "Analizamos cada asunto teniendo en cuenta su impacto en el negocio y sus objetivos comerciales.",
-    icon: Scale,
+      "Protegemos la identidad de tu marca en Argentina y en el exterior.",
+    icon: Circle,
   },
   {
-    number: "2",
-    title: "Recomendaciones claras",
+    title: "Patentes de Invención",
     description:
-      "Presentamos riesgos, alternativas y acciones concretas en un lenguaje comprensible.",
-    icon: FileCheck,
+      "Aseguramos la protección legal de tus invenciones y desarrollos tecnológicos.",
+    icon: Lightbulb,
   },
   {
-    number: "3",
-    title: "Prevención y estrategia",
-    description:
-      "Buscamos anticipar conflictos y construir estructuras jurídicas sólidas desde el inicio.",
-    icon: Compass,
+    title: "Diseños Industriales",
+    description: "Protegemos la estética y el diseño de tus productos.",
+    icon: PenTool,
   },
   {
-    number: "4",
-    title: "Atención cercana",
+    title: "Derechos de Autor",
     description:
-      "Ofrecemos acompañamiento directo, seguimiento continuo y soluciones adaptadas a cada cliente.",
+      "Resguardamos tus obras, creaciones y contenidos originales.",
+    icon: Copyright,
+  },
+  {
+    title: "Asesoramiento Estratégico",
+    description:
+      "Soluciones legales a medida para potenciar tus activos intangibles.",
     icon: Handshake,
   },
 ];
 
-export const missionStatements = [
-  "Protegemos lo que diferencia a su empresa.",
-  "Estructuramos las relaciones que hacen posible su crecimiento.",
-  "Defendemos sus intereses cuando surge una controversia.",
-];
-
-export const stats = [
-  { value: "5", label: "áreas de práctica especializadas" },
-  { value: "100%", label: "enfoque en propiedad intelectual y negocios" },
-  { value: "360°", label: "asesoría preventiva y contenciosa" },
-  { value: "1:1", label: "atención personalizada y cercana" },
+export const whyChooseUs = [
+  "Enfoque estratégico y personalizado.",
+  "Amplia experiencia y actualización constante.",
+  "Acompañamiento integral en cada etapa.",
+  "Compromiso, confidencialidad y resultados.",
 ];

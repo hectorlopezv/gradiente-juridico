@@ -1,9 +1,7 @@
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
-import { AboutSection } from "@/components/about-section";
-import { PracticeAreas } from "@/components/practice-areas";
-import { HowWeWork } from "@/components/how-we-work";
-import { StatsSection } from "@/components/stats-section";
+import { ValueEquation } from "@/components/value-equation";
+import { IpSection } from "@/components/ip-section";
 import { Footer } from "@/components/footer";
 
 export default function Home() {
@@ -12,10 +10,8 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <AboutSection />
-        <PracticeAreas />
-        <HowWeWork />
-        <StatsSection />
+        <ValueEquation />
+        <IpSection />
       </main>
       <Footer />
     </>

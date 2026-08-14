@@ -4,6 +4,7 @@ interface LogoProps {
   className?: string;
   showText?: boolean;
   size?: "sm" | "md" | "lg";
+  variant?: "default" | "light";
 }
 
 const sizeMap = {
@@ -12,8 +13,14 @@ const sizeMap = {
   lg: { icon: "size-16", text: "text-base tracking-[0.3em]" },
 };
 
-export function Logo({ className, showText = true, size = "md" }: LogoProps) {
+export function Logo({
+  className,
+  showText = true,
+  size = "md",
+  variant = "default",
+}: LogoProps) {
   const sizes = sizeMap[size];
+  const isLight = variant === "light";
 
   return (
     <div className={cn("flex flex-col items-center gap-2", className)}>
@@ -26,27 +33,39 @@ export function Logo({ className, showText = true, size = "md" }: LogoProps) {
           aria-hidden="true"
         >
           <defs>
-            <linearGradient id="logo-gradient" x1="24" y1="4" x2="24" y2="44">
-              <stop offset="0%" stopColor="#2b6cb0" />
-              <stop offset="100%" stopColor="#1a365d" />
+            <linearGradient
+              id={`logo-gradient-${variant}-${size}`}
+              x1="24"
+              y1="4"
+              x2="24"
+              y2="44"
+            >
+              <stop offset="0%" stopColor={isLight ? "#5ba3f5" : "#2b7de9"} />
+              <stop offset="100%" stopColor={isLight ? "#ffffff" : "#001b3a"} />
             </linearGradient>
           </defs>
           <path
             d="M24 4L44 40H4L24 4Z"
-            stroke="url(#logo-gradient)"
+            stroke={`url(#logo-gradient-${variant}-${size})`}
             strokeWidth="2"
             fill="none"
           />
         </svg>
-        <span className="font-heading text-brand text-[0.65em] leading-none italic -mb-0.5">
+        <span
+          className={cn(
+            "font-heading text-[0.65em] leading-none italic -mb-0.5",
+            isLight ? "text-white" : "text-brand"
+          )}
+        >
           (J)
         </span>
       </div>
       {showText && (
         <span
           className={cn(
-            "font-heading font-medium text-brand uppercase",
-            sizes.text
+            "font-heading font-medium uppercase",
+            sizes.text,
+            isLight ? "text-white" : "text-brand"
           )}
         >
           Gradiente Jurídico
