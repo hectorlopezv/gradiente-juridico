@@ -3,6 +3,7 @@ import { Hero } from "@/components/hero";
 import { ValueEquation } from "@/components/value-equation";
 import { IpSection } from "@/components/ip-section";
 import { Footer } from "@/components/footer";
+import { SupportChatbot } from "@/components/support-chatbot";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <IpSection />
       </main>
       <Footer />
+      <SupportChatbot />
     </>
   );
 }
