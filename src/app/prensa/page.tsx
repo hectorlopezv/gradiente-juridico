@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/header";
@@ -8,12 +7,14 @@ import { ChatCta } from "@/components/chat-cta";
 import { CtaLink } from "@/components/cta-link";
 import { brand } from "@/lib/data";
 import { experts } from "@/lib/team";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Prensa | Gradiente Jurídico",
+export const metadata = pageMeta({
+  title: "Prensa",
   description:
-    "Contactos de prensa de Gradiente Jurídico para entrevistas y consultas de medios sobre propiedad intelectual.",
-};
+    "Contactos de prensa de Gradiente Jurídico para entrevistas y consultas de medios sobre propiedad intelectual en Colombia.",
+  path: "/prensa",
+});
 
 const pressContacts = experts.slice(0, 2);
 

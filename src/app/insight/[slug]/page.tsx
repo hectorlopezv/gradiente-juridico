@@ -7,6 +7,7 @@ import { Footer } from "@/components/footer";
 import { ChatCta } from "@/components/chat-cta";
 import { CtaLink } from "@/components/cta-link";
 import { getCase, successCases } from "@/lib/cases";
+import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
   return successCases.map((item) => ({ slug: item.slug }));
@@ -20,10 +21,14 @@ export async function generateMetadata({
   const { slug } = await params;
   const item = getCase(slug);
   if (!item) return {};
-  return {
-    title: `${item.title} | Insight | Gradiente Jurídico`,
+  return pageMeta({
+    title: `${item.title} | Insight`,
     description: item.summary,
-  };
+    path: `/insight/${item.slug}`,
+    image: item.image,
+    imageAlt: item.title,
+    type: "article",
+  });
 }
 
 export default async function InsightArticlePage({

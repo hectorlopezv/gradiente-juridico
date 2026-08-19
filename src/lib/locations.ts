@@ -1,4 +1,5 @@
 import { contact } from "@/lib/data";
+import { media } from "@/lib/media";
 
 export interface Office {
   slug: string;
@@ -53,10 +54,8 @@ export const offices: Office[] = [
       },
     ],
     email: contact.email,
-    image:
-      "https://images.unsplash.com/photo-1531761535209-42c6a8bfc36c?auto=format&fit=crop&w=2400&q=80",
-    mapImage:
-      "https://images.unsplash.com/photo-1524661132064-ae519eede3e8?auto=format&fit=crop&w=2400&q=80",
+    image: media.bogota,
+    mapImage: media.map,
   },
 ];
 

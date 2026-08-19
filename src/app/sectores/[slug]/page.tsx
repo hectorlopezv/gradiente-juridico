@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer";
 import { AreaPage } from "@/components/area-page";
 import { getService } from "@/lib/data";
 import { getSector, sectors } from "@/lib/sectors";
+import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
   return sectors.map((sector) => ({ slug: sector.slug }));
@@ -19,10 +20,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const sector = getSector(slug);
   if (!sector) return {};
-  return {
-    title: `${sector.title} | Gradiente Jurídico`,
+  return pageMeta({
+    title: sector.title,
     description: sector.description,
-  };
+    path: `/sectores/${sector.slug}`,
+    image: sector.image,
+    imageAlt: sector.title,
+  });
 }
 
 export default async function SectorPage({

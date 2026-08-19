@@ -7,6 +7,7 @@ import { Footer } from "@/components/footer";
 import { CtaLink } from "@/components/cta-link";
 import { getWhatsAppUrl } from "@/lib/chatbot";
 import { experts, getExpert } from "@/lib/team";
+import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
   return experts.map((expert) => ({ slug: expert.slug }));
@@ -20,10 +21,14 @@ export async function generateMetadata({
   const { slug } = await params;
   const expert = getExpert(slug);
   if (!expert) return {};
-  return {
-    title: `${expert.name} | Gradiente Jurídico`,
-    description: `${expert.role}. ${expert.practice}.`,
-  };
+  return pageMeta({
+    title: expert.name,
+    description: `${expert.role}. ${expert.practice}. ${expert.teaser}`,
+    path: `/equipo/${expert.slug}`,
+    image: expert.image,
+    imageAlt: expert.name,
+    type: "profile",
+  });
 }
 
 export default async function ExpertPage({

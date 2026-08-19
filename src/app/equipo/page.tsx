@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/header";
@@ -6,12 +5,14 @@ import { Footer } from "@/components/footer";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { experts } from "@/lib/team";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Equipo | Gradiente Jurídico",
+export const metadata = pageMeta({
+  title: "Equipo",
   description:
-    "Conoce a los expertos de Gradiente Jurídico en propiedad intelectual.",
-};
+    "Abogados y especialistas de Gradiente Jurídico en marcas, patentes, software y estrategia de propiedad intelectual en Colombia.",
+  path: "/equipo",
+});
 
 export default function EquipoPage() {
   return (

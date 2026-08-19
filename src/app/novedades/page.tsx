@@ -1,16 +1,17 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { newsItems } from "@/lib/data";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Novedades | Gradiente Jurídico",
+export const metadata = pageMeta({
+  title: "Novedades",
   description:
-    "Novedades de Gradiente Jurídico sobre propiedad intelectual.",
-};
+    "Novedades de Gradiente Jurídico sobre marcas, patentes, derechos de autor y práctica de propiedad intelectual en Colombia.",
+  path: "/novedades",
+});
 
 export default function NovedadesPage() {
   return (

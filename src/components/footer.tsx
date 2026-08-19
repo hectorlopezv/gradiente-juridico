@@ -45,7 +45,6 @@ const legalLinks = [
   { label: "Prensa", href: "/prensa" },
   { label: "RSS", href: "/rss-landing" },
   { label: "Ubicaciones", href: "/ubicaciones" },
-  { label: "Contacto", href: "/contacto" },
 ];
 
 export function Footer() {

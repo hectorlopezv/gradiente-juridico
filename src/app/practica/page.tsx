@@ -5,6 +5,14 @@ import { Footer } from "@/components/footer";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { services } from "@/lib/data";
+import { pageMeta } from "@/lib/seo";
+
+export const metadata = pageMeta({
+  title: "Práctica",
+  description:
+    "Áreas de práctica en propiedad intelectual: marcas, patentes, diseños, derechos de autor y asesoramiento estratégico en Colombia.",
+  path: "/practica",
+});
 
 export default function PracticaPage() {
   return (

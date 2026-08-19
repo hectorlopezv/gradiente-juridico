@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/header";
@@ -8,12 +7,14 @@ import { CtaLink } from "@/components/cta-link";
 import { Reveal } from "@/components/reveal";
 import { services } from "@/lib/data";
 import { offices } from "@/lib/locations";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Ubicaciones | Gradiente Jurídico",
+export const metadata = pageMeta({
+  title: "Ubicaciones",
   description:
-    "Sede en Colombia. Atención presencial con cita y online, en propiedad intelectual.",
-};
+    "Gradiente Jurídico opera desde Colombia. Reuniones presenciales con cita u online para asuntos de propiedad intelectual.",
+  path: "/ubicaciones",
+});
 
 export default function UbicacionesPage() {
   const office = offices[0];

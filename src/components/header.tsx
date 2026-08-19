@@ -20,8 +20,8 @@ import {
 } from "@/components/ui/sheet";
 import {
   navMain,
-  navTop,
   services,
+  brand,
 } from "@/lib/data";
 import { experts } from "@/lib/team";
 import { successCases } from "@/lib/cases";
@@ -29,7 +29,7 @@ import { sectors } from "@/lib/sectors";
 import { ChatCta } from "@/components/chat-cta";
 import { cn } from "@/lib/utils";
 
-type MenuKey = "insight" | "expertise" | "locations" | "people";
+type MenuKey = "insight" | "expertise" | "people";
 
 export function Header() {
   const pathname = usePathname();
@@ -72,58 +72,38 @@ export function Header() {
   }
 
   const isHome = pathname === "/";
-  const solid =
-    !isHome || scrolled || Boolean(openMenu) || mobileOpen;
-  const inverted = !solid;
+  const megaOpen = Boolean(openMenu);
+  const onHero = isHome && !scrolled && !megaOpen && !mobileOpen;
+  const linkClass = (active: boolean) =>
+    cn(
+      "transition-colors",
+      megaOpen
+        ? active
+          ? "text-primary"
+          : "text-foreground/75 hover:text-foreground"
+        : active
+          ? "text-primary"
+          : "text-white/85 hover:text-white"
+    );
 
   return (
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-[70] transition-colors duration-200",
-          solid ? "bg-white" : "bg-transparent"
+          "fixed inset-x-0 top-0 z-[70]",
+          megaOpen
+            ? "bg-white"
+            : onHero
+              ? "bg-gradient-to-b from-black/75 via-black/45 to-transparent"
+              : "border-b border-white/10 bg-black/95 shadow-lg backdrop-blur-md"
         )}
         onMouseLeave={scheduleClose}
         onMouseEnter={cancelClose}
       >
         <div className="relative z-[71] mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-10">
-          <div className="hidden items-center justify-end gap-8 pt-3 lg:flex">
-            {navTop.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors",
-                    inverted
-                      ? "text-white/85 hover:text-white"
-                      : openMenu === item.menu
-                        ? "text-primary"
-                        : "text-foreground/70 hover:text-foreground"
-                  )}
-                  onMouseEnter={() =>
-                    item.menu ? open(item.menu) : setOpenMenu(null)
-                  }
-                  onFocus={() =>
-                    item.menu ? open(item.menu) : setOpenMenu(null)
-                  }
-                  onClick={() => setOpenMenu(null)}
-                >
-                  {item.label}
-                  {item.menu ? (
-                    <ChevronDown
-                      className={cn(
-                        "size-3 transition-transform duration-300",
-                        openMenu === item.menu && "rotate-180"
-                      )}
-                    />
-                  ) : null}
-                </Link>
-              ))}
-          </div>
-
-          <div className="flex h-16 items-center justify-between lg:h-[72px]">
+          <div className="flex h-16 items-center justify-between lg:h-[83px]">
             <Link href="/" className="shrink-0">
-              <Wordmark inverted={inverted} />
+              <Wordmark inverted={!megaOpen} />
             </Link>
 
             <nav className="hidden items-center gap-9 lg:flex">
@@ -132,12 +112,8 @@ export function Header() {
                   key={item.label}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-1 text-[16px] transition-colors",
-                    inverted
-                      ? "text-white hover:text-white/80"
-                      : openMenu === item.menu
-                        ? "text-primary"
-                        : "text-foreground hover:text-primary"
+                    "flex items-center gap-1 text-[16px]",
+                    linkClass(openMenu === item.menu)
                   )}
                   onMouseEnter={() =>
                     item.menu ? open(item.menu) : setOpenMenu(null)
@@ -176,10 +152,7 @@ export function Header() {
                   size="icon-lg"
                   aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
                   aria-expanded={mobileOpen}
-                  className={cn(
-                    "rounded-none",
-                    inverted ? "text-white hover:bg-white/10 hover:text-white" : "text-foreground"
-                  )}
+                  className="rounded-none text-white hover:bg-white/10 hover:text-white"
                   onClick={() => setMobileOpen((open) => !open)}
                 >
                   {mobileOpen ? <X className="size-6" /> : <Menu className="size-6" />}
@@ -195,19 +168,15 @@ export function Header() {
                     <SheetTitle>Menú</SheetTitle>
                   </SheetHeader>
                   <nav aria-label="Menú móvil" className="flex flex-col">
-                    <MobileNavLink href="/nosotros">Nosotros</MobileNavLink>
-                    <MobileNavLink href="/contacto">Contacto</MobileNavLink>
+                    <a
+                      href={brand.whatsappUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={mobileRowClass}
+                    >
+                      WhatsApp
+                    </a>
                     <Accordion className="w-full">
-                      <AccordionItem value="locations" className="border-b-0">
-                        <AccordionTrigger className={mobileRowClass}>
-                          Ubicación
-                        </AccordionTrigger>
-                        <AccordionContent className="bg-white pb-0 [&_a]:no-underline">
-                          <MobileNavLink href="/ubicaciones" nested>
-                            Colombia
-                          </MobileNavLink>
-                        </AccordionContent>
-                      </AccordionItem>
                       <AccordionItem value="insight" className="border-b-0">
                         <AccordionTrigger className={mobileRowClass}>
                           Insight
@@ -261,8 +230,29 @@ export function Header() {
                           </MobileNavLink>
                         </AccordionContent>
                       </AccordionItem>
+                      <AccordionItem value="people" className="border-b-0">
+                        <AccordionTrigger className={mobileRowClass}>
+                          Nosotros
+                        </AccordionTrigger>
+                        <AccordionContent className="bg-white pb-0 [&_a]:no-underline">
+                          <MobileNavLink href="/nosotros" nested>
+                            La firma
+                          </MobileNavLink>
+                          <MobileNavLink href="/equipo" nested>
+                            Equipo
+                          </MobileNavLink>
+                          {experts.map((expert) => (
+                            <MobileNavLink
+                              key={expert.slug}
+                              href={`/equipo/${expert.slug}`}
+                              nested
+                            >
+                              {expert.name}
+                            </MobileNavLink>
+                          ))}
+                        </AccordionContent>
+                      </AccordionItem>
                     </Accordion>
-                    <MobileNavLink href="/equipo">Equipo</MobileNavLink>
                     <div className="px-5 py-3">
                       <ChatCta
                         variant="red"
@@ -275,17 +265,19 @@ export function Header() {
                 </SheetContent>
               </Sheet>
             </div>
+          </div>
         </div>
 
         <div
           className={cn(
-            "absolute inset-x-0 top-full hidden overflow-hidden lg:block",
+            "absolute inset-x-0 top-full hidden w-full overflow-hidden lg:block",
             openMenu ? "pointer-events-auto" : "pointer-events-none"
           )}
+          onMouseEnter={cancelClose}
         >
           <div
             className={cn(
-              "mega-curtain bg-white shadow-[0_24px_40px_rgba(0,0,0,0.18)]",
+              "mega-curtain w-full bg-white shadow-[0_24px_40px_rgba(0,0,0,0.18)]",
               openMenu ? "translate-y-0" : "-translate-y-full"
             )}
           >
@@ -338,23 +330,23 @@ export function Header() {
                 <div className="grid gap-12 lg:grid-cols-[0.9fr_1.4fr]">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Equipo
+                      Nosotros
                     </p>
                     <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-muted-foreground">
-                      Un equipo cercano, con criterio de negocio, para proteger
-                      y potenciar tus activos intangibles.
+                      Boutique de propiedad intelectual. Protección, innovación
+                      y criterio de negocio para tus activos intangibles.
                     </p>
                     <Link
-                      href="/equipo"
+                      href="/nosotros"
                       onClick={() => setOpenMenu(null)}
                       className="cta-link cta-link-red mt-6"
                     >
-                      Ver el equipo
+                      Conocer la firma
                     </Link>
                   </div>
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Expertos
+                      Equipo
                     </p>
                     <ul className="mt-5 grid gap-x-10 gap-y-5 sm:grid-cols-2">
                       {experts.map((expert) => (
@@ -374,6 +366,13 @@ export function Header() {
                         </li>
                       ))}
                     </ul>
+                    <Link
+                      href="/equipo"
+                      onClick={() => setOpenMenu(null)}
+                      className="cta-link cta-link-red mt-8"
+                    >
+                      Ver el equipo
+                    </Link>
                   </div>
                 </div>
               )}
@@ -444,63 +443,8 @@ export function Header() {
                   </div>
                 </div>
               )}
-
-              {openMenu === "locations" && (
-                <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Oficinas
-                    </p>
-                    <Link
-                      href="/ubicaciones"
-                      onClick={() => setOpenMenu(null)}
-                      className="mt-5 block font-heading text-5xl font-bold uppercase leading-[0.9] tracking-tight hover:text-primary sm:text-6xl"
-                    >
-                      Colombia
-                    </Link>
-                    <p className="mt-5 max-w-md text-[15px] leading-relaxed text-muted-foreground">
-                      Sede en Colombia. Reuniones con cita, presenciales u
-                      online. Un equipo, no una red de oficinas.
-                    </p>
-                    <Link
-                      href="/ubicaciones"
-                      onClick={() => setOpenMenu(null)}
-                      className="cta-link cta-link-red mt-6"
-                    >
-                      Más información
-                    </Link>
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Seleccionar ubicación
-                    </p>
-                    <p className="mt-5 font-heading text-xl font-semibold uppercase tracking-wide">
-                      América
-                    </p>
-                    <ul className="mt-4 space-y-3">
-                      <li>
-                        <Link
-                          href="/ubicaciones"
-                          onClick={() => setOpenMenu(null)}
-                          className="text-[17px] hover:text-primary"
-                        >
-                          Colombia
-                        </Link>
-                      </li>
-                    </ul>
-                    <Link
-                      href="/ubicaciones"
-                      onClick={() => setOpenMenu(null)}
-                      className="cta-link cta-link-red mt-8"
-                    >
-                      Ver todas las ubicaciones
-                    </Link>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
-        </div>
         </div>
       </header>
 

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { media } from "@/lib/media";
 import { cn } from "@/lib/utils";
 
 export function Wordmark({
@@ -10,12 +11,12 @@ export function Wordmark({
 }) {
   return (
     <Image
-      src={inverted ? "/logo-gradiente-light.png" : "/logo-gradiente.png"}
+      src={inverted ? media.logoLight : media.logo}
       alt="Gradiente Jurídico"
       width={355}
       height={160}
       priority
-      className={cn("h-9 w-auto sm:h-11 lg:h-[52px]", className)}
+      className={cn("h-9 w-auto sm:h-11 lg:h-[60px]", className)}
     />
   );
 }

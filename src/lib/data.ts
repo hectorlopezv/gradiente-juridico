@@ -8,6 +8,7 @@ import {
   TrendingUp,
   type LucideIcon,
 } from "lucide-react";
+import { media } from "@/lib/media";
 
 export interface Service {
   slug: string;
@@ -54,23 +55,15 @@ export const brand = {
 };
 
 export const images = {
-  hero: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2400&q=80",
-  opportunity:
-    "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=2000&q=80",
-  future:
-    "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80",
+  hero: media.hero,
+  opportunity: media.opportunity,
+  future: media.future,
 };
-
-export const navTop = [
-  { label: "Nosotros", href: "/nosotros" },
-  { label: "Contacto", href: "/contacto" },
-  { label: "Ubicación", href: "/ubicaciones", menu: "locations" as const },
-];
 
 export const navMain = [
   { label: "Insight", href: "/insight", menu: "insight" as const },
   { label: "Práctica", href: "/practica", menu: "expertise" as const },
-  { label: "Equipo", href: "/equipo", menu: "people" as const },
+  { label: "Nosotros", href: "/nosotros", menu: "people" as const },
 ];
 
 export const valuePillars: ValuePillar[] = [
@@ -119,8 +112,7 @@ export const services: Service[] = [
       "Vigilancia, oposiciones e infracciones",
       "Mapa de protección en el exterior cuando el mercado lo exige",
     ],
-    image:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1400&q=80",
+    image: media.corporate,
     icon: Circle,
   },
 
@@ -162,8 +154,7 @@ export const services: Service[] = [
       "Seguimiento del trámite ante la SIC",
       "Apoyo a licencias, inversión y expansión",
     ],
-    image:
-      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1400&q=80",
+    image: media.techLab,
     icon: Lightbulb,
   },
   {
@@ -204,8 +195,7 @@ export const services: Service[] = [
       "Calendario de divulgación y lanzamiento",
       "Defensa frente a copias en el mercado",
     ],
-    image:
-      "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&w=1400&q=80",
+    image: media.design,
     icon: PenTool,
   },
   {
@@ -246,8 +236,7 @@ export const services: Service[] = [
       "Cesiones, obras por encargo y licencias",
       "Reglas entre autores, empresa y colaboradores",
     ],
-    image:
-      "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1400&q=80",
+    image: media.copyright,
     icon: Copyright,
   },
   {
@@ -288,8 +277,7 @@ export const services: Service[] = [
       "Contratos de colaboración y de desarrollo",
       "Preparación para inversión o expansión",
     ],
-    image:
-      "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1400&q=80",
+    image: media.office,
     icon: Handshake,
   },
 ];
@@ -328,24 +316,21 @@ export const trending = [
     description:
       "Protección de identidad comercial en Colombia y en el exterior.",
     href: "/practica/registro-de-marcas",
-    image:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+    image: media.corporate,
   },
   {
     title: "Patentes de Invención",
     description:
       "Estrategia para resguardar desarrollos tecnológicos e invenciones.",
     href: "/practica/patentes-de-invencion",
-    image:
-      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80",
+    image: media.techLab,
   },
   {
     title: "Asesoramiento Estratégico",
     description:
       "Soluciones a medida para potenciar tus activos intangibles.",
     href: "/practica/asesoramiento-estrategico",
-    image:
-      "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1200&q=80",
+    image: media.office,
   },
 ];
 

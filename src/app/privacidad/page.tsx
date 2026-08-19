@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalDoc, LegalHeading } from "@/components/legal-doc";
 import { CookiePreferencesLink } from "@/components/cookie-preferences-link";
 import { brand } from "@/lib/data";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacidad y cookies | Gradiente Jurídico",
+export const metadata = pageMeta({
+  title: "Privacidad y cookies",
   description:
     "Política de tratamiento de datos personales y cookies de Gradiente Jurídico, de acuerdo con la Ley 1581 de 2012.",
-};
+  path: "/privacidad",
+});
 
 export default function PrivacidadPage() {
   return (

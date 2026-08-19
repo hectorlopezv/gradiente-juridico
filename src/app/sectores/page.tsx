@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/header";
@@ -7,12 +6,14 @@ import { PageHero } from "@/components/page-hero";
 import { ChatCta } from "@/components/chat-cta";
 import { Reveal } from "@/components/reveal";
 import { sectors } from "@/lib/sectors";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Sectores | Gradiente Jurídico",
+export const metadata = pageMeta({
+  title: "Sectores",
   description:
-    "Propiedad intelectual para tecnología, software y emprendimiento.",
-};
+    "Propiedad intelectual para tecnología, software y emprendimiento. Cómo protegemos el activo en cada sector.",
+  path: "/sectores",
+});
 
 export default function SectoresPage() {
   return (

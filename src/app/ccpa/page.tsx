@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalDoc, LegalHeading } from "@/components/legal-doc";
 import { CookiePreferencesLink } from "@/components/cookie-preferences-link";
 import { brand } from "@/lib/data";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Divulgaciones CCPA | Gradiente Jurídico",
+export const metadata = pageMeta({
+  title: "Divulgaciones CCPA",
   description:
-    "Divulgaciones de privacidad para residentes de California (CCPA / CPRA) respecto de este sitio web.",
-};
+    "Divulgaciones de privacidad para residentes de California (CCPA / CPRA) respecto del sitio de Gradiente Jurídico.",
+  path: "/ccpa",
+});
 
 export default function CcpaPage() {
   return (

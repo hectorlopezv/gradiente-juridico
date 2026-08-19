@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/header";
@@ -6,12 +5,14 @@ import { Footer } from "@/components/footer";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { successCases } from "@/lib/cases";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Insight | Gradiente Jurídico",
+export const metadata = pageMeta({
+  title: "Insight",
   description:
-    "Insight sobre propiedad intelectual en Colombia: marcas, software, IA y gestión del activo. Análisis, no asesoría.",
-};
+    "Análisis de propiedad intelectual en Colombia: marcas, software, IA y gestión del activo. Lectura de criterios, no asesoría legal.",
+  path: "/insight",
+});
 
 export default function InsightPage() {
   return (

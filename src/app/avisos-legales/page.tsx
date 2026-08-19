@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalDoc, LegalHeading } from "@/components/legal-doc";
 import { brand } from "@/lib/data";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Avisos legales | Gradiente Jurídico",
+export const metadata = pageMeta({
+  title: "Avisos legales",
   description:
-    "Condiciones de uso del sitio de Gradiente Jurídico. El contenido no constituye asesoría legal.",
-};
+    "Condiciones de uso del sitio de Gradiente Jurídico. El contenido informa sobre servicios y no constituye asesoría legal.",
+  path: "/avisos-legales",
+});
 
 export default function AvisosLegalesPage() {
   return (

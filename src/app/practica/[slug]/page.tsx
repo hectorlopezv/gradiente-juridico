@@ -4,6 +4,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { AreaPage } from "@/components/area-page";
 import { getService, services } from "@/lib/data";
+import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }));
@@ -17,10 +18,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const service = getService(slug);
   if (!service) return {};
-  return {
-    title: `${service.title} | Gradiente Jurídico`,
+  return pageMeta({
+    title: service.title,
     description: service.description,
-  };
+    path: `/practica/${service.slug}`,
+    image: service.image,
+    imageAlt: service.title,
+  });
 }
 
 export default async function PracticaAreaPage({

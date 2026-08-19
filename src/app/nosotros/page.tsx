@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -7,12 +6,14 @@ import { ChatCta } from "@/components/chat-cta";
 import { CtaLink } from "@/components/cta-link";
 import { Reveal } from "@/components/reveal";
 import { brand, images, whyChooseUs } from "@/lib/data";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Nosotros | Gradiente Jurídico",
+export const metadata = pageMeta({
+  title: "Nosotros",
   description:
-    "Firma boutique de propiedad intelectual. Protección, innovación y valor para tu negocio.",
-};
+    "Boutique de propiedad intelectual en Colombia. Protección, innovación y criterio de negocio para marcas, patentes y activos intangibles.",
+  path: "/nosotros",
+});
 
 export default function NosotrosPage() {
   return (

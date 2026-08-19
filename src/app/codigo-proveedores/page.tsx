@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalDoc, LegalHeading } from "@/components/legal-doc";
 import { brand } from "@/lib/data";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Código de proveedores | Gradiente Jurídico",
+export const metadata = pageMeta({
+  title: "Código de proveedores",
   description:
-    "Principios y estándares mínimos que Gradiente Jurídico espera de quienes nos proveen bienes o servicios.",
-};
+    "Principios y estándares mínimos que Gradiente Jurídico espera de quienes proveen bienes o servicios a la firma.",
+  path: "/codigo-proveedores",
+});
 
 export default function CodigoProveedoresPage() {
   return (

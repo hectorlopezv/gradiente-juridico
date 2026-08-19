@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
 import { Rss } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { PageHero } from "@/components/page-hero";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "RSS | Gradiente Jurídico",
+export const metadata = pageMeta({
+  title: "RSS",
   description:
-    "Feeds RSS de Gradiente Jurídico: Insight y Novedades sobre propiedad intelectual.",
-};
+    "Feeds RSS de Gradiente Jurídico: Insight y Novedades sobre propiedad intelectual en Colombia.",
+  path: "/rss-landing",
+});
 
 const feeds = [
   {

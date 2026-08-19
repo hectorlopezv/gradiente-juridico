@@ -21,7 +21,7 @@ export interface ChatReply {
 const MENU: QuickAction[] = [
   { label: "Servicios", payload: "servicios" },
   { label: "¿Por qué elegirnos?", payload: "por que elegirnos" },
-  { label: "Contacto", payload: "contacto" },
+  { label: "WhatsApp", payload: "whatsapp" },
 ];
 
 const SERVICE_ACTIONS: QuickAction[] = services.map((service) => ({
@@ -31,7 +31,7 @@ const SERVICE_ACTIONS: QuickAction[] = services.map((service) => ({
 
 const AFTER_SERVICE: QuickAction[] = [
   { label: "Otro servicio", payload: "servicios" },
-  { label: "Contacto", payload: "contacto" },
+  { label: "WhatsApp", payload: "whatsapp" },
   { label: "Menú", payload: "menu" },
 ];
 
@@ -56,7 +56,7 @@ export function getWelcomeReply(): ChatReply {
 
 function contactReply(): ChatReply {
   return {
-    content: `${contact.person} te puede atender por WhatsApp o correo.\n\n${contact.phoneIntl}\n${contact.email}\n${contact.location} · ${contact.locationDetail}`,
+    content: `${contact.person} te atiende por WhatsApp.\n\n${contact.phoneIntl}\n${contact.location} · ${contact.locationDetail}`,
     suggestions: [
       { label: "Ver servicios", payload: "servicios" },
       { label: "Menú", payload: "menu" },
@@ -91,7 +91,7 @@ function whyReply(): ChatReply {
     content: `∇(J) = ${pillars}.\nTu innovación, nuestra misión.\n\n${reasons}`,
     suggestions: [
       { label: "Ver servicios", payload: "servicios" },
-      { label: "Contacto", payload: "contacto" },
+      { label: "WhatsApp", payload: "whatsapp" },
       { label: "Menú", payload: "menu" },
     ],
   };
@@ -102,7 +102,7 @@ const HUMAN_HELP =
 const SERVICES_LIST =
   /servicios?|que ofrecen|que hacen|areas?|opciones|menu/i;
 const CONTACT =
-  /contacto|email|correo|telefono|escribir|duvan|helena|ubicacion|donde|colombia|bogota|medellin/i;
+  /whatsapp|contacto|email|correo|telefono|escribir|duvan|helena|ubicacion|donde|colombia|bogota|medellin/i;
 const HOURS = /horario|horarios|hora|cuando atienden|disponibilidad/i;
 const VALUE =
   /por que|elegirnos|diferencial|ventaja|enfoque|confidencial|mision|innovacion|nabla|gradiente/i;
