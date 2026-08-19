@@ -40,13 +40,13 @@ export function IpSection() {
             <div className="mt-2 h-0.5 w-12 bg-brand-light" />
             <ul className="mt-10 space-y-5">
               {whyChooseUs.map((item) => (
-                <li key={item} className="flex items-start gap-3">
+                <li key={item.number} className="flex items-start gap-3">
                   <Check
                     className="mt-0.5 size-5 shrink-0 text-brand-light"
                     strokeWidth={2}
                   />
                   <span className="text-base leading-relaxed text-white/90">
-                    {item}
+                    {item.title}
                   </span>
                 </li>
               ))}

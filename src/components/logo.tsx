@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 interface LogoProps {
   className?: string;
   showText?: boolean;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   variant?: "default" | "light";
 }
 
@@ -11,6 +11,7 @@ const sizeMap = {
   sm: { icon: "size-8", text: "text-xs tracking-[0.2em]" },
   md: { icon: "size-12", text: "text-sm tracking-[0.25em]" },
   lg: { icon: "size-16", text: "text-base tracking-[0.3em]" },
+  xl: { icon: "size-28 sm:size-36", text: "text-lg tracking-[0.28em] sm:text-xl" },
 };
 
 export function Logo({
@@ -40,8 +41,8 @@ export function Logo({
               x2="24"
               y2="44"
             >
-              <stop offset="0%" stopColor={isLight ? "#5ba3f5" : "#2b7de9"} />
-              <stop offset="100%" stopColor={isLight ? "#ffffff" : "#001b3a"} />
+              <stop offset="0%" stopColor={isLight ? "#ffffff" : "#ae132a"} />
+              <stop offset="100%" stopColor={isLight ? "#f0c4ca" : "#111111"} />
             </linearGradient>
           </defs>
           <path

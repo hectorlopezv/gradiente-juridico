@@ -1,37 +1,117 @@
-import { contact, services } from "@/lib/data";
+import { contact, services, valuePillars, whyChooseUs } from "@/lib/data";
+
+export const OPEN_CHAT_EVENT = "gj-open-chat";
+
+export function openChat() {
+  window.dispatchEvent(new Event(OPEN_CHAT_EVENT));
+}
+
+export interface QuickAction {
+  label: string;
+  payload: string;
+}
 
 export interface ChatReply {
   content: string;
-  redirectWhatsApp?: boolean;
+  suggestions: QuickAction[];
   whatsappMessage?: string;
+  whatsappLabel?: string;
 }
 
-const WELCOME_MESSAGE =
-  "¡Hola! Soy el asistente de Gradiente Jurídico. Puedo ayudarte con información sobre nuestros servicios de propiedad intelectual, datos de contacto y más. ¿En qué puedo ayudarte?";
+const MENU: QuickAction[] = [
+  { label: "Servicios", payload: "servicios" },
+  { label: "¿Por qué elegirnos?", payload: "por que elegirnos" },
+  { label: "Contacto", payload: "contacto" },
+];
 
-const HOURS_MESSAGE =
-  "Nuestros horarios varían según la demanda. Escríbenos por WhatsApp o correo y te responderemos a la brevedad.";
+const SERVICE_ACTIONS: QuickAction[] = services.map((service) => ({
+  label: service.title,
+  payload: service.title,
+}));
 
-const HUMAN_HELP_PATTERNS =
-  /humano|persona|abogado|hablar con|ayuda humana|no entiendo|complejo|urgente|caso espec/i;
+const AFTER_SERVICE: QuickAction[] = [
+  { label: "Otro servicio", payload: "servicios" },
+  { label: "Contacto", payload: "contacto" },
+  { label: "Menú", payload: "menu" },
+];
 
-const SERVICES_LIST_PATTERNS =
-  /servicios?|qu[eé] ofrecen|qu[eé] hacen|[áa]reas?|opciones/i;
+function whatsappAction(message: string): Pick<
+  ChatReply,
+  "whatsappMessage" | "whatsappLabel"
+> {
+  return {
+    whatsappMessage: `Hola, vengo desde el sitio de Gradiente Jurídico. ${message}`,
+    whatsappLabel: "Continuar por WhatsApp",
+  };
+}
 
-const CONTACT_PATTERNS =
-  /contacto|email|correo|tel[eé]fono|whatsapp|escribir|duvan|helena/i;
+export function getWelcomeReply(): ChatReply {
+  return {
+    content:
+      "Hola, soy el asistente de Gradiente Jurídico. Te oriento sobre propiedad intelectual y te conecto con el equipo por WhatsApp cuando quieras hablar con un abogado.",
+    suggestions: MENU,
+    ...whatsappAction("Quiero una consulta sobre propiedad intelectual."),
+  };
+}
 
-const HOURS_PATTERNS = /horario|horarios|hora|cu[aá]ndo atienden|disponibilidad/i;
+function contactReply(): ChatReply {
+  return {
+    content: `${contact.person} te puede atender por WhatsApp o correo.\n\n${contact.phoneIntl}\n${contact.email}\n${contact.location} · ${contact.locationDetail}`,
+    suggestions: [
+      { label: "Ver servicios", payload: "servicios" },
+      { label: "Menú", payload: "menu" },
+    ],
+    ...whatsappAction("Quiero hablar con el equipo."),
+  };
+}
 
+function servicesReply(): ChatReply {
+  const list = services
+    .map((service, index) => `${index + 1}. ${service.title}`)
+    .join("\n");
+  return {
+    content: `Trabajamos estas áreas. Elige una para ver el detalle:\n\n${list}`,
+    suggestions: [...SERVICE_ACTIONS, { label: "Menú", payload: "menu" }],
+  };
+}
+
+function serviceDetail(index: number): ChatReply {
+  const service = services[index];
+  return {
+    content: `${service.title}\n\n${service.description}\n\nSi este es tu caso, el equipo puede revisarlo por WhatsApp.`,
+    suggestions: AFTER_SERVICE,
+    ...whatsappAction(`Me interesa ${service.title}.`),
+  };
+}
+
+function whyReply(): ChatReply {
+  const pillars = valuePillars.map((pillar) => pillar.label).join(" · ");
+  const reasons = whyChooseUs.map((item) => `• ${item.title}`).join("\n");
+  return {
+    content: `∇(J) = ${pillars}.\nTu innovación, nuestra misión.\n\n${reasons}`,
+    suggestions: [
+      { label: "Ver servicios", payload: "servicios" },
+      { label: "Contacto", payload: "contacto" },
+      { label: "Menú", payload: "menu" },
+    ],
+  };
+}
+
+const HUMAN_HELP =
+  /humano|persona|abogado|hablar|whatsapp|ayuda humana|urgente|caso|consulta personal/i;
+const SERVICES_LIST =
+  /servicios?|que ofrecen|que hacen|areas?|opciones|menu/i;
+const CONTACT =
+  /contacto|email|correo|telefono|escribir|duvan|helena|ubicacion|donde|colombia|bogota|medellin/i;
+const HOURS = /horario|horarios|hora|cuando atienden|disponibilidad/i;
+const VALUE =
+  /por que|elegirnos|diferencial|ventaja|enfoque|confidencial|mision|innovacion|nabla|gradiente/i;
 const SERVICE_KEYWORDS: { patterns: RegExp; index: number }[] = [
-  { patterns: /marca|marcas|registro de marca/i, index: 0 },
-  { patterns: /patente|patentes|invenci[oó]n/i, index: 1 },
-  { patterns: /dise[ñn]o|dise[ñn]os|industrial/i, index: 2 },
-  { patterns: /derechos? de autor|autor|copyright|obra/i, index: 3 },
-  {
-    patterns: /asesoramiento|asesor[ií]a|estrat[eé]gico|consultor[ií]a/i,
-    index: 4,
-  },
+  { patterns: /marca/, index: 0 },
+  { patterns: /patente|invencion/, index: 1 },
+  { patterns: /diseno|industrial/, index: 2 },
+  { patterns: /autor|copyright|obra/, index: 3 },
+  { patterns: /asesoramiento|asesoria|estrategico|consultoria/, index: 4 },
 ];
 
 function normalize(text: string): string {
@@ -41,81 +121,49 @@ function normalize(text: string): string {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
-function buildWhatsAppMessage(userQuestion: string): string {
-  return `Hola, vengo desde el sitio web de Gradiente Jurídico. ${userQuestion.trim()}`;
-}
-
-function contactReply(): ChatReply {
-  return {
-    content: `Puedes contactarnos así:\n\n• Persona de contacto: ${contact.person}\n• Email: ${contact.email}\n• WhatsApp: ${contact.phoneIntl}\n• Ubicación: ${contact.location}`,
-    redirectWhatsApp: true,
-    whatsappMessage: buildWhatsAppMessage("Me gustaría recibir más información."),
-  };
-}
-
-export function getWelcomeMessage(): string {
-  return WELCOME_MESSAGE;
-}
-
 export function getBotReply(userInput: string): ChatReply {
-  const q = normalize(userInput);
+  const q = normalize(userInput).trim();
 
-  if (!q.trim()) {
+  if (!q) {
     return {
-      content: "Escribe tu pregunta y con gusto te ayudo.",
+      content: "Elige una opción o escribe tu consulta.",
+      suggestions: MENU,
     };
   }
 
-  if (HUMAN_HELP_PATTERNS.test(q)) {
+  if (/^menu$/.test(q)) return getWelcomeReply();
+  if (HUMAN_HELP.test(q)) {
     return {
       content:
-        "Para casos más complejos o atención personalizada, te conecto con nuestro equipo por WhatsApp.",
-      redirectWhatsApp: true,
-      whatsappMessage: buildWhatsAppMessage(userInput),
+        "Te paso con el equipo. Duvan Rambal te responde por WhatsApp.",
+      suggestions: [
+        { label: "Ver servicios", payload: "servicios" },
+        { label: "Menú", payload: "menu" },
+      ],
+      ...whatsappAction(userInput),
     };
   }
-
-  if (HOURS_PATTERNS.test(q)) {
+  if (HOURS.test(q)) {
     return {
-      content: HOURS_MESSAGE,
-      redirectWhatsApp: true,
-      whatsappMessage: buildWhatsAppMessage(
-        "Quisiera consultar sobre horarios de atención."
-      ),
+      content:
+        "Atendemos presencial y online. El horario se confirma según el caso; WhatsApp es el canal más rápido.",
+      suggestions: MENU,
+      ...whatsappAction("Quisiera consultar disponibilidad."),
     };
   }
-
-  if (CONTACT_PATTERNS.test(q)) {
-    return contactReply();
-  }
-
-  if (SERVICES_LIST_PATTERNS.test(q)) {
-    const list = services
-      .map((s, i) => `${i + 1}. ${s.title}: ${s.description}`)
-      .join("\n\n");
-    return {
-      content: `Ofrecemos estos servicios:\n\n${list}`,
-    };
-  }
+  if (CONTACT.test(q)) return contactReply();
+  if (VALUE.test(q)) return whyReply();
+  if (SERVICES_LIST.test(q)) return servicesReply();
 
   for (const { patterns, index } of SERVICE_KEYWORDS) {
-    if (patterns.test(q)) {
-      const service = services[index];
-      return {
-        content: `**${service.title}**\n\n${service.description}\n\n¿Te gustaría agendar una consulta sobre este servicio?`,
-        redirectWhatsApp: true,
-        whatsappMessage: buildWhatsAppMessage(
-          `Me interesa el servicio de ${service.title}.`
-        ),
-      };
-    }
+    if (patterns.test(q)) return serviceDetail(index);
   }
 
   return {
     content:
-      "No tengo una respuesta específica para esa consulta. Te recomiendo hablar directamente con nuestro equipo para una atención personalizada.",
-    redirectWhatsApp: true,
-    whatsappMessage: buildWhatsAppMessage(userInput),
+      "Eso ya necesita revisión del equipo. Puedes escribirlo por WhatsApp o volver al menú.",
+    suggestions: MENU,
+    ...whatsappAction(userInput),
   };
 }
 
@@ -123,11 +171,3 @@ export function getWhatsAppUrl(message?: string): string {
   if (!message) return contact.whatsappUrl;
   return `${contact.whatsappUrl}?text=${encodeURIComponent(message)}`;
 }
-
-export const quickQuestions = [
-  "¿Qué servicios ofrecen?",
-  "Registro de marcas",
-  "Patentes",
-  "Contacto",
-  "Hablar con un abogado",
-];

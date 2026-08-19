@@ -1,61 +1,69 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Logo } from "@/components/logo";
-import { DiamondDivider } from "@/components/diamond-divider";
-import { buttonVariants } from "@/components/ui/button";
-import { brand } from "@/lib/data";
-import { cn } from "@/lib/utils";
+import { CtaLink } from "@/components/cta-link";
+import { images, newsItems } from "@/lib/data";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-hero-gradient">
-      <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="text-center lg:text-left">
-            <Logo size="lg" className="mx-auto lg:mx-0" />
-            <DiamondDivider className="mx-auto mt-8 max-w-md lg:mx-0" />
-            <p className="mt-8 font-heading text-xl text-brand sm:text-2xl">
-              {brand.tagline}
-            </p>
-            <p className="mt-2 text-lg font-medium text-brand-light sm:text-xl">
-              {brand.taglineHighlight}
-            </p>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
-              <Link
-                href="#servicios"
-                className={cn(
-                  buttonVariants({ size: "lg" }),
-                  "bg-brand px-8 hover:bg-brand/90"
-                )}
-              >
-                Nuestros servicios
-                <ArrowRight className="ml-2 size-4" />
-              </Link>
-              <Link
-                href="#contacto"
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "lg" }),
-                  "border-brand/30 px-8 text-brand hover:bg-brand/5"
-                )}
-              >
-                Contáctanos
-              </Link>
-            </div>
+    <section className="relative overflow-hidden bg-black text-white">
+      <div className="relative min-h-[65svh] lg:min-h-[93vh]">
+        <Image
+          src={images.hero}
+          alt=""
+          fill
+          priority
+          className="ken-burns object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative z-10 mx-auto flex min-h-[65svh] max-w-[1400px] flex-col justify-end px-4 pb-10 pt-28 sm:px-6 lg:min-h-[93vh] lg:px-10 lg:pb-40 lg:pt-32">
+          <p className="animate-fade-up text-sm text-white/85">
+            Especialistas en propiedad intelectual
+          </p>
+          <h1
+            className="animate-fade-up mt-3 max-w-3xl font-heading text-4xl font-bold uppercase leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl"
+            style={{ animationDelay: "140ms" }}
+          >
+            Protegemos
+            <br />
+            tus ideas
+          </h1>
+          <div
+            className="animate-fade-up mt-6"
+            style={{ animationDelay: "280ms" }}
+          >
+            <CtaLink href="/practica">Conocer más</CtaLink>
           </div>
+        </div>
+      </div>
 
-          <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
-            <div className="overflow-hidden rounded-sm border border-border/60 bg-white shadow-lg">
-              <Image
-                src="/brand-flyer.png"
-                alt="Gradiente Jurídico - Especialistas en Propiedad Intelectual"
-                width={800}
-                height={500}
-                className="h-auto w-full object-cover object-top"
-                priority
-              />
-            </div>
-          </div>
+      <div
+        id="novedades"
+        className="relative z-20 grid lg:absolute lg:inset-x-0 lg:bottom-0 lg:grid-cols-[200px_1fr]"
+      >
+        <Link
+          href="/novedades"
+          className="flex items-center bg-black px-4 py-3 sm:px-6"
+        >
+          <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-white">
+            Novedades
+          </p>
+        </Link>
+        <div className="flex snap-x snap-mandatory overflow-x-auto bg-primary md:grid md:grid-cols-3 md:overflow-visible">
+          {newsItems.map((item) => (
+            <a
+              key={item.title}
+              href={item.href}
+              className="news-item min-w-[80%] snap-start border-white/10 px-5 py-4 hover:bg-black/20 md:min-w-0 md:border-l"
+            >
+              <p className="text-[11px] uppercase tracking-[0.16em] text-white/70">
+                {item.kicker}
+              </p>
+              <p className="mt-2 font-heading text-base font-semibold uppercase leading-snug tracking-wide text-white sm:text-lg">
+                {item.title}
+              </p>
+            </a>
+          ))}
         </div>
       </div>
     </section>

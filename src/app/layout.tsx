@@ -1,47 +1,49 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Barlow_Condensed, Source_Sans_3 } from "next/font/google";
+import { Analytics } from "@/components/analytics";
+import { CookieBanner } from "@/components/cookie-banner";
+import { SupportChatbot } from "@/components/support-chatbot";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const sourceSans = Source_Sans_3({
+  variable: "--font-source",
   subsets: ["latin"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const barlow = Barlow_Condensed({
+  variable: "--font-barlow",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: "Gradiente Jurídico | Propiedad Intelectual",
   description:
-    "Especialistas en Propiedad Intelectual. Protegemos tus ideas. Potenciamos tu futuro. Buenos Aires, Argentina.",
-  keywords: [
-    "propiedad intelectual",
-    "marcas",
-    "patentes",
-    "diseños industriales",
-    "derechos de autor",
-    "abogados",
-    "Buenos Aires",
-    "Argentina",
-  ],
-  openGraph: {
-    title: "Gradiente Jurídico",
-    description:
-      "Especialistas en Propiedad Intelectual. Protegemos tus ideas. Potenciamos tu futuro.",
-    type: "website",
-    locale: "es_AR",
+    "Especialistas en Propiedad Intelectual. Protegemos tus ideas. Potenciamos tu futuro.",
+  alternates: {
+    types: {
+      "application/rss+xml": "/rss-landing/insight/all",
+    },
   },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
-      className={`${inter.variable} ${playfair.variable} h-full antialiased`}
+      className={`${sourceSans.variable} ${barlow.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col overflow-x-hidden">
+        {children}
+        <SupportChatbot />
+        <CookieBanner />
+        <Analytics />
+      </body>
     </html>
   );
 }
