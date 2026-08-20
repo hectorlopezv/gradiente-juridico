@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { CtaLink } from "@/components/cta-link";
+import { LocaleLink } from "@/components/language-switch";
 import { getWhatsAppUrl } from "@/lib/chatbot";
-import { experts, getExpert } from "@/lib/team";
+import { getLocale } from "@/lib/locale-server";
+import { prefixHref } from "@/lib/locale";
+import { messages } from "@/lib/messages";
+import { experts, getExpert, listExperts } from "@/lib/team";
 import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -19,12 +21,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const expert = getExpert(slug);
+  const locale = await getLocale();
+  const expert = getExpert(slug, locale);
   if (!expert) return {};
   return pageMeta({
     title: expert.name,
     description: `${expert.role}. ${expert.practice}. ${expert.teaser}`,
-    path: `/equipo/${expert.slug}`,
+    path: prefixHref(`/equipo/${expert.slug}`, locale),
     image: expert.image,
     imageAlt: expert.name,
     type: "profile",
@@ -37,17 +40,20 @@ export default async function ExpertPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const expert = getExpert(slug);
+  const locale = await getLocale();
+  const t = messages(locale);
+  const expert = getExpert(slug, locale);
   if (!expert) notFound();
 
-  const others = experts.filter((person) => person.slug !== expert.slug);
+  const others = listExperts(locale).filter((person) => person.slug !== expert.slug);
   const whatsapp = getWhatsAppUrl(
-    `Hola, vengo desde el sitio de Gradiente Jurídico. Quiero hablar con ${expert.name} sobre ${expert.practice}.`
+    locale === "en"
+      ? `Hi, I am coming from the Gradiente Jurídico website. I would like to speak with ${expert.name} about ${expert.practice}.`
+      : `Hola, vengo desde el sitio de Gradiente Jurídico. Quiero hablar con ${expert.name} sobre ${expert.practice}.`
   );
 
   return (
     <>
-      <Header />
       <main className="overflow-x-hidden">
         <section className="bg-black pt-28 text-white lg:pt-32">
           <div className="mx-auto grid max-w-[1400px] items-end gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-10 lg:py-20">
@@ -63,7 +69,7 @@ export default async function ExpertPage({
             </div>
             <div>
               <p className="animate-fade-up text-[12px] font-semibold uppercase tracking-[0.18em] text-white/60">
-                Equipo · {expert.location}
+                {t.team} · {expert.location}
               </p>
               <h1 className="animate-fade-up mt-4 font-heading text-4xl font-bold uppercase leading-[0.95] tracking-tight sm:text-6xl">
                 {expert.name}
@@ -72,7 +78,7 @@ export default async function ExpertPage({
                 {expert.role} · {expert.practice}
               </p>
               <div className="animate-fade-up mt-8">
-                <CtaLink href={whatsapp}>Contactar por WhatsApp</CtaLink>
+                <CtaLink href={whatsapp}>{t.contactWhatsApp}</CtaLink>
               </div>
             </div>
           </div>
@@ -82,7 +88,7 @@ export default async function ExpertPage({
           <div className="mx-auto grid max-w-[1400px] gap-16 px-4 sm:px-6 lg:grid-cols-[1.2fr_0.8fr] lg:px-10">
             <div>
               <h2 className="font-heading text-3xl font-semibold uppercase tracking-wide">
-                Perfil
+                {t.profile}
               </h2>
               {expert.bio.split("\n\n").map((paragraph) => (
                 <p
@@ -94,21 +100,21 @@ export default async function ExpertPage({
               ))}
 
               <h2 className="mt-12 font-heading text-3xl font-semibold uppercase tracking-wide">
-                A quién asesora
+                {t.whoWeAdvise}
               </h2>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
                 {expert.advises}
               </p>
 
               <h2 className="mt-12 font-heading text-3xl font-semibold uppercase tracking-wide">
-                Cómo trabaja
+                {t.howWeWork}
               </h2>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
                 {expert.approach}
               </p>
 
               <h2 className="mt-12 font-heading text-3xl font-semibold uppercase tracking-wide">
-                Asuntos típicos
+                {t.typicalMatters}
               </h2>
               <ul className="mt-6 max-w-2xl divide-y divide-black/10 border-t border-black/10">
                 {expert.typicalMatters.map((item) => (
@@ -127,7 +133,7 @@ export default async function ExpertPage({
             </div>
             <div>
               <h2 className="font-heading text-3xl font-semibold uppercase tracking-wide">
-                Enfoque
+                {t.focus}
               </h2>
               <ul className="mt-6 divide-y divide-black/10 border-t border-black/10">
                 {expert.focus.map((item) => (
@@ -139,25 +145,25 @@ export default async function ExpertPage({
               <dl className="mt-10 space-y-4 text-[15px]">
                 <div>
                   <dt className="text-[12px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    Admisión
+                    {t.admission}
                   </dt>
                   <dd className="mt-1">{expert.admitted}</dd>
                 </div>
                 <div>
                   <dt className="text-[12px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    Idiomas
+                    {t.languages}
                   </dt>
                   <dd className="mt-1">{expert.languages.join(" · ")}</dd>
                 </div>
                 <div>
                   <dt className="text-[12px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    Ubicación
+                    {t.locations}
                   </dt>
-                  <dd className="mt-1">{expert.location} · presencial y online</dd>
+                  <dd className="mt-1">{expert.location} · {t.inPersonOnline}</dd>
                 </div>
               </dl>
-              <CtaLink href="/equipo" variant="red" className="mt-10">
-                Ver el equipo
+              <CtaLink href="/equipo" variant="red" className="mt-10" locale={locale}>
+                {t.seeTeam}
               </CtaLink>
             </div>
           </div>
@@ -166,26 +172,25 @@ export default async function ExpertPage({
         <section className="border-t border-black/10 bg-white py-16">
           <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-10">
             <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Más expertos
+              {t.moreExperts}
             </p>
             <ul className="mt-8 grid gap-8 sm:grid-cols-3">
               {others.map((person) => (
                 <li key={person.slug}>
-                  <Link href={`/equipo/${person.slug}`} className="group block">
+                  <LocaleLink href={`/equipo/${person.slug}`} locale={locale} className="group block">
                     <h3 className="font-heading text-xl font-semibold uppercase tracking-wide group-hover:text-primary">
                       {person.name}
                     </h3>
                     <p className="mt-1 text-sm text-muted-foreground">
                       {person.practice}
                     </p>
-                  </Link>
+                  </LocaleLink>
                 </li>
               ))}
             </ul>
           </div>
         </section>
       </main>
-      <Footer />
     </>
   );
 }

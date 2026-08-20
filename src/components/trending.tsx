@@ -1,21 +1,25 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Reveal } from "@/components/reveal";
-import { trending } from "@/lib/data";
+import { LocaleLink } from "@/components/language-switch";
+import { listTrending } from "@/lib/data";
+import { messages } from "@/lib/messages";
+import type { Locale } from "@/lib/locale";
 
-export function Trending() {
+export function Trending({ locale = "es" }: { locale?: Locale }) {
+  const t = messages(locale);
+  const items = listTrending(locale);
   return (
     <section id="insight" className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-10">
         <Reveal>
           <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Contenido destacado
+            {t.featured}
           </p>
         </Reveal>
         <div className="mt-10 grid gap-8 md:grid-cols-3">
-          {trending.map((item, index) => (
+          {items.map((item, index) => (
             <Reveal key={item.title} delay={index * 100}>
-              <Link href={item.href} className="group block">
+              <LocaleLink href={item.href} locale={locale} className="group block">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src={item.image}
@@ -31,8 +35,8 @@ export function Trending() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {item.description}
                 </p>
-                <span className="cta-link cta-link-red mt-4">Más información</span>
-              </Link>
+                <span className="cta-link cta-link-red mt-4">{t.moreInfo}</span>
+              </LocaleLink>
             </Reveal>
           ))}
         </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Wordmark } from "@/components/wordmark";
+import { LocaleLink } from "@/components/language-switch";
 import {
   Accordion,
   AccordionContent,
@@ -19,19 +20,31 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import {
-  navMain,
-  services,
+  listServices,
+  localizedBrand,
   brand,
 } from "@/lib/data";
-import { experts } from "@/lib/team";
-import { successCases } from "@/lib/cases";
-import { sectors } from "@/lib/sectors";
+import { listExperts } from "@/lib/team";
+import { listSectors } from "@/lib/sectors";
 import { ChatCta } from "@/components/chat-cta";
+import { messages } from "@/lib/messages";
+import { prefixHref, stripLocalePrefix, type Locale } from "@/lib/locale";
 import { cn } from "@/lib/utils";
 
 type MenuKey = "insight" | "expertise" | "people";
 
-export function Header() {
+export function Header({
+  locale,
+  insights,
+}: {
+  locale: Locale;
+  insights: { slug: string; title: string; kicker: string }[];
+}) {
+  const t = messages(locale);
+  const copy = localizedBrand(locale);
+  const practiceItems = listServices(locale);
+  const sectorItems = listSectors(locale);
+  const expertItems = listExperts(locale);
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState<MenuKey | null>(null);
@@ -71,7 +84,7 @@ export function Header() {
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
   }
 
-  const isHome = pathname === "/";
+  const isHome = stripLocalePrefix(pathname) === "/";
   const megaOpen = Boolean(openMenu);
   const onHero = isHome && !scrolled && !megaOpen && !mobileOpen;
   const linkClass = (active: boolean) =>
@@ -102,15 +115,21 @@ export function Header() {
       >
         <div className="relative z-[71] mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-10">
           <div className="flex h-16 items-center justify-between lg:h-[83px]">
-            <Link href="/" className="shrink-0">
+            <LocaleLink href="/" locale={locale} className="shrink-0">
               <Wordmark inverted={!megaOpen} />
-            </Link>
+            </LocaleLink>
 
-            <nav className="hidden items-center gap-9 lg:flex">
-              {navMain.map((item) => (
-                <Link
+            <div className="flex items-center justify-end gap-9">
+              <nav className="hidden items-center gap-9 lg:flex">
+              {[
+                { label: t.navInsight, href: "/insight", menu: "insight" as const },
+                { label: t.navPractice, href: "/practica", menu: "expertise" as const },
+                { label: t.navAbout, href: "/nosotros", menu: "people" as const },
+              ].map((item) => (
+                <LocaleLink
                   key={item.label}
                   href={item.href}
+                  locale={locale}
                   className={cn(
                     "flex items-center gap-1 text-[16px]",
                     linkClass(openMenu === item.menu)
@@ -132,11 +151,9 @@ export function Header() {
                       )}
                     />
                   ) : null}
-                </Link>
+                </LocaleLink>
               ))}
-            </nav>
-
-            <div className="flex items-center lg:hidden">
+              </nav>
               <Sheet
                 open={mobileOpen}
                 modal={false}
@@ -152,7 +169,7 @@ export function Header() {
                   size="icon-lg"
                   aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
                   aria-expanded={mobileOpen}
-                  className="rounded-none text-white hover:bg-white/10 hover:text-white"
+                  className="rounded-none text-white hover:bg-white/10 hover:text-white lg:hidden"
                   onClick={() => setMobileOpen((open) => !open)}
                 >
                   {mobileOpen ? <X className="size-6" /> : <Menu className="size-6" />}
@@ -179,72 +196,72 @@ export function Header() {
                     <Accordion className="w-full">
                       <AccordionItem value="insight" className="border-b-0">
                         <AccordionTrigger className={mobileRowClass}>
-                          Insight
+                          {t.navInsight}
                         </AccordionTrigger>
                         <AccordionContent className="bg-white pb-0 [&_a]:no-underline">
-                          {successCases.map((entry) => (
+                          {insights.map((entry) => (
                             <MobileNavLink
                               key={entry.slug}
-                              href={`/insight/${entry.slug}`}
+                              href={prefixHref(`/insight/${entry.slug}`, locale)}
                               nested
                             >
                               {entry.title}
                             </MobileNavLink>
                           ))}
-                          <MobileNavLink href="/insight" nested>
-                            Ver todo el insight
+                          <MobileNavLink href={prefixHref("/insight", locale)} nested>
+                            {t.navAllInsight}
                           </MobileNavLink>
                         </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="expertise" className="border-b-0">
                         <AccordionTrigger className={mobileRowClass}>
-                          Práctica
+                          {t.navPractice}
                         </AccordionTrigger>
                         <AccordionContent className="bg-white pb-0 [&_a]:no-underline">
                           <p className="px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
-                            Áreas de práctica
+                            {t.navPracticeAreas}
                           </p>
-                          {services.map((service) => (
+                          {practiceItems.map((service) => (
                             <MobileNavLink
                               key={service.slug}
-                              href={`/practica/${service.slug}`}
+                              href={prefixHref(`/practica/${service.slug}`, locale)}
                               nested
                             >
                               {service.title}
                             </MobileNavLink>
                           ))}
                           <p className="px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
-                            Sectores
+                            {t.navSectors}
                           </p>
-                          {sectors.map((sector) => (
+                          {sectorItems.map((sector) => (
                             <MobileNavLink
                               key={sector.slug}
-                              href={`/sectores/${sector.slug}`}
+                              href={prefixHref(`/sectores/${sector.slug}`, locale)}
                               nested
                             >
                               {sector.title}
                             </MobileNavLink>
                           ))}
-                          <MobileNavLink href="/practica" nested>
-                            Ver toda la práctica
+                          <MobileNavLink href={prefixHref("/practica", locale)} nested>
+                            {t.navAllPractice}
                           </MobileNavLink>
                         </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="people" className="border-b-0">
                         <AccordionTrigger className={mobileRowClass}>
-                          Nosotros
+                          {t.navAbout}
                         </AccordionTrigger>
                         <AccordionContent className="bg-white pb-0 [&_a]:no-underline">
-                          <MobileNavLink href="/nosotros" nested>
-                            La firma
+                          <MobileNavLink href={prefixHref("/nosotros", locale)} nested>
+                            {t.navFirm}
                           </MobileNavLink>
-                          <MobileNavLink href="/equipo" nested>
-                            Equipo
+                          <MobileNavLink href={prefixHref("/equipo", locale)} nested>
+                            {t.navTeam}
                           </MobileNavLink>
-                          {experts.map((expert) => (
+                          {expertItems.map((expert) => (
                             <MobileNavLink
                               key={expert.slug}
-                              href={`/equipo/${expert.slug}`}
+                              href={prefixHref(`/equipo/${expert.slug}`, locale)}
                               nested
                             >
                               {expert.name}
@@ -258,7 +275,7 @@ export function Header() {
                         variant="red"
                         onClick={() => setMobileOpen(false)}
                       >
-                        Hablemos
+                        {t.talk}
                       </ChatCta>
                     </div>
                   </nav>
@@ -286,29 +303,30 @@ export function Header() {
                 <div className="grid gap-12 lg:grid-cols-[0.9fr_1.4fr]">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Insight
+                      {t.navInsight}
                     </p>
                     <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-muted-foreground">
-                      Análisis y experiencias sobre marcas, tecnología, diseños
-                      y colaboraciones.
+                      {t.insightIntro}
                     </p>
-                    <Link
+                    <LocaleLink
                       href="/insight"
+                      locale={locale}
                       onClick={() => setOpenMenu(null)}
                       className="cta-link cta-link-red mt-6"
                     >
-                      Ver todo el insight
-                    </Link>
+                      {t.navAllInsight}
+                    </LocaleLink>
                   </div>
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Análisis reciente
+                      {t.navRecent}
                     </p>
                     <ul className="mt-5 grid gap-x-10 gap-y-5 sm:grid-cols-2">
-                      {successCases.map((item) => (
+                      {insights.map((item) => (
                         <li key={item.slug}>
-                          <Link
+                          <LocaleLink
                             href={`/insight/${item.slug}`}
+                            locale={locale}
                             onClick={() => setOpenMenu(null)}
                             className="group block"
                           >
@@ -318,7 +336,7 @@ export function Header() {
                             <p className="mt-1 text-[16px] leading-snug group-hover:text-primary">
                               {item.title}
                             </p>
-                          </Link>
+                          </LocaleLink>
                         </li>
                       ))}
                     </ul>
@@ -330,29 +348,30 @@ export function Header() {
                 <div className="grid gap-12 lg:grid-cols-[0.9fr_1.4fr]">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Nosotros
+                      {t.navAbout}
                     </p>
                     <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-muted-foreground">
-                      Boutique de propiedad intelectual. Protección, innovación
-                      y criterio de negocio para tus activos intangibles.
+                      {copy.aboutShort}
                     </p>
-                    <Link
+                    <LocaleLink
                       href="/nosotros"
+                      locale={locale}
                       onClick={() => setOpenMenu(null)}
                       className="cta-link cta-link-red mt-6"
                     >
-                      Conocer la firma
-                    </Link>
+                      {t.navKnowFirm}
+                    </LocaleLink>
                   </div>
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Equipo
+                      {t.navTeam}
                     </p>
                     <ul className="mt-5 grid gap-x-10 gap-y-5 sm:grid-cols-2">
-                      {experts.map((expert) => (
+                      {expertItems.map((expert) => (
                         <li key={expert.slug}>
-                          <Link
+                          <LocaleLink
                             href={`/equipo/${expert.slug}`}
+                            locale={locale}
                             onClick={() => setOpenMenu(null)}
                             className="group block"
                           >
@@ -362,17 +381,18 @@ export function Header() {
                             <p className="mt-1 text-sm text-muted-foreground">
                               {expert.practice}
                             </p>
-                          </Link>
+                          </LocaleLink>
                         </li>
                       ))}
                     </ul>
-                    <Link
+                    <LocaleLink
                       href="/equipo"
+                      locale={locale}
                       onClick={() => setOpenMenu(null)}
                       className="cta-link cta-link-red mt-8"
                     >
-                      Ver el equipo
-                    </Link>
+                      {t.navSeeTeam}
+                    </LocaleLink>
                   </div>
                 </div>
               )}
@@ -381,64 +401,67 @@ export function Header() {
                 <div className="grid gap-12 lg:grid-cols-3">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Sectores
+                      {t.navSectors}
                     </p>
                     <ul className="mt-5 space-y-3">
-                      {sectors.map((sector) => (
+                      {sectorItems.map((sector) => (
                         <li key={sector.slug}>
-                          <Link
+                          <LocaleLink
                             href={`/sectores/${sector.slug}`}
+                            locale={locale}
                             onClick={() => setOpenMenu(null)}
                             className="text-[17px] hover:text-primary"
                           >
                             {sector.title}
-                          </Link>
+                          </LocaleLink>
                         </li>
                       ))}
                     </ul>
-                    <Link
+                    <LocaleLink
                       href="/sectores"
+                      locale={locale}
                       onClick={() => setOpenMenu(null)}
                       className="cta-link cta-link-red mt-6"
                     >
-                      Ver todos los sectores
-                    </Link>
+                      {t.navAllSectors}
+                    </LocaleLink>
                   </div>
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Áreas de práctica
+                      {t.navPracticeAreas}
                     </p>
                     <ul className="mt-5 space-y-3">
-                      {services.map((service) => (
+                      {practiceItems.map((service) => (
                         <li key={service.slug}>
-                          <Link
+                          <LocaleLink
                             href={`/practica/${service.slug}`}
+                            locale={locale}
                             onClick={() => setOpenMenu(null)}
                             className="text-[17px] hover:text-primary"
                           >
                             {service.title}
-                          </Link>
+                          </LocaleLink>
                         </li>
                       ))}
                     </ul>
-                    <Link
+                    <LocaleLink
                       href="/practica"
+                      locale={locale}
                       onClick={() => setOpenMenu(null)}
                       className="cta-link cta-link-red mt-6"
                     >
-                      Ver toda la práctica
-                    </Link>
+                      {t.navAllPractice}
+                    </LocaleLink>
                   </div>
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Hablemos
+                      {t.talk}
                     </p>
                     <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-muted-foreground">
-                      Si no estás seguro del área, el asistente te orienta y te
-                      conecta con el equipo.
+                      {t.chatHelp}
                     </p>
                     <ChatCta variant="red" className="mt-6" onClick={() => setOpenMenu(null)}>
-                      Abrir chat
+                      {t.openChat}
                     </ChatCta>
                   </div>
                 </div>

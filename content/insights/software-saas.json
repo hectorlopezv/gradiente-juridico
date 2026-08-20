@@ -1,0 +1,85 @@
+{
+  "name": "software-saas",
+  "publishedAt": "2026-02-20",
+  "image": "/images/tech-circuit.webp",
+  "kicker": {
+    "es": "Tecnología",
+    "en": "Technology"
+  },
+  "title": {
+    "es": "Software, secretos y la ilusión de “patentar la app”",
+    "en": "Software, secrets and the illusion of “patenting the app”"
+  },
+  "summary": {
+    "es": "En 2025 la mayoría de las patentes pedidas en Colombia las presentaron no residentes. Para un SaaS local el activo suele ser código (DNDA), know-how (secreto) y contratos — no un título de invención sobre la interfaz.",
+    "en": "In 2025 most patent filings in Colombia came from non-residents. For a local SaaS the asset is usually code (DNDA), know-how (trade secret) and contracts — not an invention title over the interface."
+  },
+  "dateLabel": {
+    "es": "Análisis · 2026",
+    "en": "Analysis · 2026"
+  },
+  "sections": [
+    {
+      "title": {
+        "es": "Qué dicen las cifras",
+        "en": "What the figures say"
+      },
+      "paragraphs": [
+        {
+          "es": "El mismo recuento de 2025 sobre la SIC muestra 2.148 solicitudes de patentes en Colombia: 1.776 de no residentes (87 %) y 372 de residentes (13 %). La señal es clara: el grueso de la tecnología que se pide proteger aquí se origina fuera. Eso no significa que un SaaS colombiano “deba patentar”. Significa que hay que elegir el instrumento correcto.",
+          "en": "The same 2025 SIC count shows 2,148 patent applications in Colombia: 1,776 from non-residents (87%) and 372 from residents (13%). The signal is clear: most of the technology sought to be protected here originates abroad. That does not mean a Colombian SaaS “must patent”. It means the right instrument must be chosen."
+        },
+        {
+          "es": "La Decisión 486, como regla, no trata los programas de ordenador como invenciones patentables en sí. El código se protege por derecho de autor (Ley 23 de 1982, Decreto 1360 de 1989, DNDA). Si hay una solución técnica nueva —un procedimiento, un dispositivo— puede haber patente sobre ese objeto, no sobre “la app”.",
+          "en": "Decision 486, as a rule, does not treat computer programs as patentable inventions in themselves. Code is protected by copyright (Law 23 of 1982, Decree 1360 of 1989, DNDA). If there is a new technical solution — a process, a device — there may be a patent on that object, not on “the app”."
+        }
+      ]
+    },
+    {
+      "title": {
+        "es": "El hueco que tumba la ronda",
+        "en": "The gap that kills the round"
+      },
+      "paragraphs": [
+        {
+          "es": "El repositorio en la cuenta personal del CTO, los freelancers sin cesión y un Drive donde está el “secreto” del algoritmo. El inversionista no compra un Figma: pregunta quién puede impedir que un exempleado se lleve el know-how.",
+          "en": "The repository in the CTO’s personal account, freelancers without assignments and a Drive holding the algorithm’s “secret”. The investor is not buying a Figma file: they ask who can stop a former employee from taking the know-how."
+        },
+        {
+          "es": "La Ley 256 de 1996 y la Decisión 486 exigen, para el secreto empresarial, que la información sea secreta, tenga valor por no ser conocida y esté sujeta a medidas razonables de reserva. Un NDA sin control de acceso no convierte en secreto lo que ya se explicó en el pitch.",
+          "en": "Law 256 of 1996 and Decision 486 require, for a trade secret, that the information be secret, have value from not being known and be subject to reasonable measures of reserve. An NDA with no access control does not turn into a secret what was already explained in the pitch."
+        }
+      ]
+    },
+    {
+      "title": {
+        "es": "El enfoque",
+        "en": "The approach"
+      },
+      "paragraphs": [
+        {
+          "es": "Mapa de código, contribuciones, licencias open source y de qué no debe salir del perímetro. Cesiones a nombre de la sociedad. NDA y acuerdos de desarrollo. Decisión consciente: autor + secreto, o además una patente si el componente técnico lo aguanta.",
+          "en": "A map of code, contributions, open-source licenses and of what must not leave the perimeter. Assignments in the company’s name. NDAs and development agreements. A conscious decision: copyright + secret, or also a patent if the technical component can sustain it."
+        },
+        {
+          "es": "El data room deja de ser una carpeta de PDFs: es la respuesta a quién es titular, qué se licencia al cliente y qué permanece interno.",
+          "en": "The data room stops being a folder of PDFs: it is the answer to who owns it, what is licensed to the client and what stays internal."
+        }
+      ]
+    }
+  ],
+  "takeaways": [
+    {
+      "es": "No se “patenta la app”: el código va por autor; la invención técnica, si existe, por patente.",
+      "en": "You do not “patent the app”: code is copyright; a technical invention, if it exists, may be a patent."
+    },
+    {
+      "es": "El secreto exige medidas reales de reserva, no solo un contrato.",
+      "en": "A trade secret requires real secrecy measures, not only a contract."
+    },
+    {
+      "es": "Sin cesiones, el due diligence se cae aunque el producto funcione.",
+      "en": "Without assignments, due diligence fails even if the product works."
+    }
+  ]
+}

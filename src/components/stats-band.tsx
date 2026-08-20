@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { stats } from "@/lib/data";
-import { cn } from "@/lib/utils";
+import { listStats } from "@/lib/data";
+import type { Locale } from "@/lib/locale";
 
 function easeOutCubic(t: number) {
   return 1 - (1 - t) ** 3;
@@ -94,7 +94,8 @@ function StatItem({
   );
 }
 
-export function StatsBand() {
+export function StatsBand({ locale = "es" }: { locale?: Locale }) {
+  const stats = listStats(locale);
   return (
     <section className="bg-[#171717] text-[#f3f1ec]">
       <div className="mx-auto grid max-w-[1400px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">

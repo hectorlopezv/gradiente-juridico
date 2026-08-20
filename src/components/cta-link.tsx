@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { prefixHref, type Locale } from "@/lib/locale";
 import { cn } from "@/lib/utils";
 
 export function CtaLink({
@@ -7,15 +8,18 @@ export function CtaLink({
   children,
   variant = "light",
   className,
+  locale = "es",
 }: {
   href: string;
   children: React.ReactNode;
   variant?: "light" | "dark" | "red";
   className?: string;
+  locale?: Locale;
 }) {
+  const isExternal = href.startsWith("http") || href.startsWith("mailto:");
   return (
     <Link
-      href={href}
+      href={isExternal ? href : prefixHref(href, locale)}
       className={cn(
         "group cta-link",
         variant === "dark" && "cta-link-dark",

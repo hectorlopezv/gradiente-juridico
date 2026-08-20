@@ -1,9 +1,13 @@
 import Image from "next/image";
 import { ChatCta } from "@/components/chat-cta";
 import { Reveal } from "@/components/reveal";
-import { images } from "@/lib/data";
+import { images, localizedBrand } from "@/lib/data";
+import { messages } from "@/lib/messages";
+import type { Locale } from "@/lib/locale";
 
-export function Opportunity() {
+export function Opportunity({ locale = "es" }: { locale?: Locale }) {
+  const t = messages(locale);
+  const copy = localizedBrand(locale);
   return (
     <section className="relative min-h-[520px] overflow-hidden bg-black text-white">
       <Image
@@ -17,15 +21,14 @@ export function Opportunity() {
       <div className="relative z-10 mx-auto flex min-h-[420px] max-w-[1400px] items-center px-4 py-16 sm:px-6 sm:py-24 lg:min-h-[520px] lg:px-10">
         <Reveal className="max-w-2xl">
           <h2 className="font-heading text-3xl font-bold uppercase leading-tight tracking-tight sm:text-5xl">
-            Piensa innovación.
+            {t.thinkInnovation}
             <br />
-            Piensa Gradiente Jurídico.
+            {t.thinkGj}
           </h2>
           <p className="mt-6 max-w-xl text-lg text-white/80">
-            Acompañamos a empresas, creadores y emprendedores en cada etapa:
-            proteger, estructurar y defender lo que diferencia al negocio.
+            {copy.aboutShort}
           </p>
-          <ChatCta className="mt-8">Hablemos</ChatCta>
+          <ChatCta className="mt-8">{t.letsTalk}</ChatCta>
         </Reveal>
       </div>
     </section>

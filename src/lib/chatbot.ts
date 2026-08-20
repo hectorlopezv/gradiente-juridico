@@ -1,4 +1,6 @@
-import { contact, services, valuePillars, whyChooseUs } from "@/lib/data";
+import { contact, listServices, listValuePillars, listWhyChoose } from "@/lib/data";
+import { messages } from "@/lib/messages";
+import type { Locale } from "@/lib/locale";
 
 export const OPEN_CHAT_EVENT = "gj-open-chat";
 
@@ -18,100 +20,126 @@ export interface ChatReply {
   whatsappLabel?: string;
 }
 
-const MENU: QuickAction[] = [
-  { label: "Servicios", payload: "servicios" },
-  { label: "¿Por qué elegirnos?", payload: "por que elegirnos" },
-  { label: "WhatsApp", payload: "whatsapp" },
-];
+function menu(locale: Locale): QuickAction[] {
+  const t = messages(locale);
+  return [
+    { label: t.ourServices, payload: "servicios" },
+    { label: t.chatWhyUs, payload: "por que elegirnos" },
+    { label: t.navWhatsApp, payload: "whatsapp" },
+  ];
+}
 
-const SERVICE_ACTIONS: QuickAction[] = services.map((service) => ({
-  label: service.title,
-  payload: service.title,
-}));
+function afterService(locale: Locale): QuickAction[] {
+  const t = messages(locale);
+  return [
+    { label: t.chatAnotherService, payload: "servicios" },
+    { label: t.navWhatsApp, payload: "whatsapp" },
+    { label: t.navMenu, payload: "menu" },
+  ];
+}
 
-const AFTER_SERVICE: QuickAction[] = [
-  { label: "Otro servicio", payload: "servicios" },
-  { label: "WhatsApp", payload: "whatsapp" },
-  { label: "Menú", payload: "menu" },
-];
-
-function whatsappAction(message: string): Pick<
-  ChatReply,
-  "whatsappMessage" | "whatsappLabel"
-> {
+function whatsappAction(
+  locale: Locale,
+  message: string
+): Pick<ChatReply, "whatsappMessage" | "whatsappLabel"> {
+  const t = messages(locale);
   return {
-    whatsappMessage: `Hola, vengo desde el sitio de Gradiente Jurídico. ${message}`,
-    whatsappLabel: "Continuar por WhatsApp",
+    whatsappMessage: `${t.chatWaHello} ${message}`,
+    whatsappLabel: t.chatContinueWa,
   };
 }
 
-export function getWelcomeReply(): ChatReply {
+export function getWelcomeReply(locale: Locale = "es"): ChatReply {
+  const t = messages(locale);
   return {
-    content:
-      "Hola, soy el asistente de Gradiente Jurídico. Te oriento sobre propiedad intelectual y te conecto con el equipo por WhatsApp cuando quieras hablar con un abogado.",
-    suggestions: MENU,
-    ...whatsappAction("Quiero una consulta sobre propiedad intelectual."),
+    content: t.chatWelcome,
+    suggestions: menu(locale),
+    ...whatsappAction(locale, t.chatWaConsult),
   };
 }
 
-function contactReply(): ChatReply {
+function contactReply(locale: Locale): ChatReply {
+  const t = messages(locale);
   return {
-    content: `${contact.person} te atiende por WhatsApp.\n\n${contact.phoneIntl}\n${contact.location} · ${contact.locationDetail}`,
+    content: `${contact.person} · WhatsApp\n\n${contact.phoneIntl}\n${contact.location} · ${
+      locale === "en" ? "In-person and online" : contact.locationDetail
+    }`,
     suggestions: [
-      { label: "Ver servicios", payload: "servicios" },
-      { label: "Menú", payload: "menu" },
+      { label: t.chatSeeServices, payload: "servicios" },
+      { label: t.navMenu, payload: "menu" },
     ],
-    ...whatsappAction("Quiero hablar con el equipo."),
+    ...whatsappAction(locale, t.chatWaTeam),
   };
 }
 
-function servicesReply(): ChatReply {
-  const list = services
+function servicesReply(locale: Locale): ChatReply {
+  const t = messages(locale);
+  const practice = listServices(locale);
+  const list = practice
     .map((service, index) => `${index + 1}. ${service.title}`)
     .join("\n");
   return {
-    content: `Trabajamos estas áreas. Elige una para ver el detalle:\n\n${list}`,
-    suggestions: [...SERVICE_ACTIONS, { label: "Menú", payload: "menu" }],
-  };
-}
-
-function serviceDetail(index: number): ChatReply {
-  const service = services[index];
-  return {
-    content: `${service.title}\n\n${service.description}\n\nSi este es tu caso, el equipo puede revisarlo por WhatsApp.`,
-    suggestions: AFTER_SERVICE,
-    ...whatsappAction(`Me interesa ${service.title}.`),
-  };
-}
-
-function whyReply(): ChatReply {
-  const pillars = valuePillars.map((pillar) => pillar.label).join(" · ");
-  const reasons = whyChooseUs.map((item) => `• ${item.title}`).join("\n");
-  return {
-    content: `∇(J) = ${pillars}.\nTu innovación, nuestra misión.\n\n${reasons}`,
+    content: `${t.chatServicesLead}\n\n${list}`,
     suggestions: [
-      { label: "Ver servicios", payload: "servicios" },
-      { label: "WhatsApp", payload: "whatsapp" },
-      { label: "Menú", payload: "menu" },
+      ...practice.map((service) => ({
+        label: service.title,
+        payload: service.title,
+      })),
+      { label: t.navMenu, payload: "menu" },
+    ],
+  };
+}
+
+function serviceDetail(locale: Locale, slug: string): ChatReply {
+  const t = messages(locale);
+  const service = listServices(locale).find((item) => item.slug === slug);
+  if (!service) return servicesReply(locale);
+  return {
+    content: `${service.title}\n\n${service.description}\n\n${t.chatServiceClose}`,
+    suggestions: afterService(locale),
+    ...whatsappAction(locale, `${t.chatWaInterest} ${service.title}.`),
+  };
+}
+
+function whyReply(locale: Locale): ChatReply {
+  const t = messages(locale);
+  const pillars = listValuePillars(locale)
+    .map((pillar) => pillar.label)
+    .join(" · ");
+  const reasons = listWhyChoose(locale)
+    .map((item) => `• ${item.title}`)
+    .join("\n");
+  return {
+    content: `∇(J) = ${pillars}.\n${t.chatMission}\n\n${reasons}`,
+    suggestions: [
+      { label: t.chatSeeServices, payload: "servicios" },
+      { label: t.navWhatsApp, payload: "whatsapp" },
+      { label: t.navMenu, payload: "menu" },
     ],
   };
 }
 
 const HUMAN_HELP =
-  /humano|persona|abogado|hablar|whatsapp|ayuda humana|urgente|caso|consulta personal/i;
+  /humano|persona|abogado|hablar|whatsapp|ayuda humana|urgente|caso|consulta personal|lawyer|attorney|human|speak/i;
 const SERVICES_LIST =
-  /servicios?|que ofrecen|que hacen|areas?|opciones|menu/i;
+  /servicios?|que ofrecen|que hacen|areas?|opciones|menu|services|practice|what do you/i;
 const CONTACT =
-  /whatsapp|contacto|email|correo|telefono|escribir|duvan|helena|ubicacion|donde|colombia|bogota|medellin/i;
-const HOURS = /horario|horarios|hora|cuando atienden|disponibilidad/i;
+  /whatsapp|contacto|email|correo|telefono|escribir|duvan|helena|ubicacion|donde|colombia|bogota|medellin|contact|phone|location|where/i;
+const HOURS =
+  /horario|horarios|hora|cuando atienden|disponibilidad|hours|schedule|availability|when are you/i;
 const VALUE =
-  /por que|elegirnos|diferencial|ventaja|enfoque|confidencial|mision|innovacion|nabla|gradiente/i;
-const SERVICE_KEYWORDS: { patterns: RegExp; index: number }[] = [
-  { patterns: /marca/, index: 0 },
-  { patterns: /patente|invencion/, index: 1 },
-  { patterns: /diseno|industrial/, index: 2 },
-  { patterns: /autor|copyright|obra/, index: 3 },
-  { patterns: /asesoramiento|asesoria|estrategico|consultoria/, index: 4 },
+  /por que|elegirnos|diferencial|ventaja|enfoque|confidencial|mision|innovacion|nabla|gradiente|why choose|advantage|mission/i;
+const SERVICE_KEYWORDS: { patterns: RegExp; slug: string }[] = [
+  { patterns: /marca|trademark|brand/, slug: "registro-de-marcas" },
+  { patterns: /patente|invencion|patent|invention/, slug: "patentes-de-invencion" },
+  { patterns: /diseno|industrial|design/, slug: "disenos-industriales" },
+  { patterns: /autor|copyright|obra|work/, slug: "derechos-de-autor" },
+  { patterns: /contrato|negociacion|distribucion|compraventa|alianza|contract|deal/, slug: "contratos-y-negocios" },
+  { patterns: /sociedad|societari|accionista|estatuto|sas|junta|asamblea|shareholder|bylaw|corporate/, slug: "sociedades-y-gobierno-corporativo" },
+  { patterns: /competencia|desleal|publicidad|consumo|promocion|sancionator|advertising|consumer|unfair/, slug: "competencia-consumo-y-publicidad" },
+  { patterns: /litigio|demanda|controversia|proceso civil|proceso comercial|litigation|lawsuit|dispute/, slug: "litigios-y-solucion-de-controversias" },
+  { patterns: /compliance|cumplimiento|privacidad|riesgos|politicas|privacy|risk/, slug: "compliance-y-gestion-de-riesgos" },
+  { patterns: /inversion extranjera|sucursal|filial|extranjer|foreign investment|branch|subsidiary/, slug: "inversion-extranjera-y-negocios-en-colombia" },
 ];
 
 function normalize(text: string): string {
@@ -121,49 +149,47 @@ function normalize(text: string): string {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
-export function getBotReply(userInput: string): ChatReply {
+export function getBotReply(userInput: string, locale: Locale = "es"): ChatReply {
+  const t = messages(locale);
   const q = normalize(userInput).trim();
 
   if (!q) {
     return {
-      content: "Elige una opción o escribe tu consulta.",
-      suggestions: MENU,
+      content: t.chatPick,
+      suggestions: menu(locale),
     };
   }
 
-  if (/^menu$/.test(q)) return getWelcomeReply();
+  if (/^menu$/.test(q)) return getWelcomeReply(locale);
   if (HUMAN_HELP.test(q)) {
     return {
-      content:
-        "Te paso con el equipo. Duvan Rambal te responde por WhatsApp.",
+      content: t.chatHuman,
       suggestions: [
-        { label: "Ver servicios", payload: "servicios" },
-        { label: "Menú", payload: "menu" },
+        { label: t.chatSeeServices, payload: "servicios" },
+        { label: t.navMenu, payload: "menu" },
       ],
-      ...whatsappAction(userInput),
+      ...whatsappAction(locale, userInput),
     };
   }
   if (HOURS.test(q)) {
     return {
-      content:
-        "Atendemos presencial y online. El horario se confirma según el caso; WhatsApp es el canal más rápido.",
-      suggestions: MENU,
-      ...whatsappAction("Quisiera consultar disponibilidad."),
+      content: t.chatHours,
+      suggestions: menu(locale),
+      ...whatsappAction(locale, t.chatWaHours),
     };
   }
-  if (CONTACT.test(q)) return contactReply();
-  if (VALUE.test(q)) return whyReply();
-  if (SERVICES_LIST.test(q)) return servicesReply();
+  if (CONTACT.test(q)) return contactReply(locale);
+  if (VALUE.test(q)) return whyReply(locale);
+  if (SERVICES_LIST.test(q)) return servicesReply(locale);
 
-  for (const { patterns, index } of SERVICE_KEYWORDS) {
-    if (patterns.test(q)) return serviceDetail(index);
+  for (const { patterns, slug } of SERVICE_KEYWORDS) {
+    if (patterns.test(q)) return serviceDetail(locale, slug);
   }
 
   return {
-    content:
-      "Eso ya necesita revisión del equipo. Puedes escribirlo por WhatsApp o volver al menú.",
-    suggestions: MENU,
-    ...whatsappAction(userInput),
+    content: t.chatFallback,
+    suggestions: menu(locale),
+    ...whatsappAction(locale, userInput),
   };
 }
 

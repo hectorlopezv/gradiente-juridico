@@ -1,7 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { PageHero } from "@/components/page-hero";
 import { ChatCta } from "@/components/chat-cta";
 import { CtaLink } from "@/components/cta-link";
@@ -21,7 +19,6 @@ const pressContacts = experts.slice(0, 2);
 export default function PrensaPage() {
   return (
     <>
-      <Header />
       <main className="overflow-x-hidden">
         <PageHero
           kicker="Prensa"
@@ -96,7 +93,6 @@ export default function PrensaPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   );
 }

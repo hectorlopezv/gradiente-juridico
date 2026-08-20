@@ -1,0 +1,81 @@
+{
+  "name": "diseno-industrial",
+  "publishedAt": "2026-01-22",
+  "image": "/images/hospitality.webp",
+  "kicker": {
+    "es": "Diseños",
+    "en": "Designs"
+  },
+  "title": {
+    "es": "Línea de producto: registrar la forma antes del drop",
+    "en": "Product line: register the appearance before the drop"
+  },
+  "summary": {
+    "es": "El diseño industrial en Colombia dura diez años y no se renueva. Divulgar en feria o en Instagram antes de la solicitud pone en riesgo la novedad. El calendario de lanzamiento es el expediente.",
+    "en": "Industrial design in Colombia lasts ten years and is not renewable. Disclosing at a fair or on Instagram before filing can destroy novelty. The launch calendar is the file."
+  },
+  "dateLabel": {
+    "es": "Análisis · 2026",
+    "en": "Analysis · 2026"
+  },
+  "sections": [
+    {
+      "title": {
+        "es": "Por qué el timing manda",
+        "en": "Why timing governs"
+      },
+      "paragraphs": [
+        {
+          "es": "La Decisión 486 trata el diseño industrial como la apariencia de un producto. El trámite es ante la SIC. La protección típica es de diez años desde la solicitud y no se renueva como la marca: al vencer, la forma pasa al dominio público.",
+          "en": "Decision 486 treats industrial design as the appearance of a product. The filing is with the SIC. Typical protection is ten years from the application and is not renewable like a trademark: when it expires, the form falls into the public domain."
+        },
+        {
+          "es": "La novedad se evalúa frente a lo ya accesible al público, aquí o en el exterior. Un lookbook, un reel o un stand en feria pueden ser divulgación. Pedir el registro “la semana del lanzamiento” suele ser pedir tarde.",
+          "en": "Novelty is assessed against what is already accessible to the public, here or abroad. A lookbook, a reel or a fair stand can be disclosure. Filing “the week of launch” is usually filing late."
+        }
+      ]
+    },
+    {
+      "title": {
+        "es": "Forma, función y signo",
+        "en": "Form, function and sign"
+      },
+      "paragraphs": [
+        {
+          "es": "Si lo que diferencia es la silueta, es diseño. Si es un mecanismo, puede ser patente. Si es el nombre o el logo en el empaque, es marca. Mezclar los tres en un solo trámite es el error de catálogo.",
+          "en": "If what differentiates is the silhouette, it is design. If it is a mechanism, it may be a patent. If it is the name or logo on the packaging, it is a trademark. Mixing the three in one filing is the catalogue error."
+        },
+        {
+          "es": "Con el fabricante, el riesgo no es solo la copia en el mercado: es que retiene moldes. Las cláusulas de no uso de herramientas y de confidencialidad son parte del activo, no un anexo de compras.",
+          "en": "With the manufacturer, the risk is not only copies in the market: it is that they retain molds. Non-use of tooling and confidentiality clauses are part of the asset, not a purchasing annex."
+        }
+      ]
+    },
+    {
+      "title": {
+        "es": "Cómo lo trabajamos",
+        "en": "How we work it"
+      },
+      "paragraphs": [
+        {
+          "es": "Elegimos las piezas cuya copia mataría la temporada. Preparamos representaciones claras. Alineamos el calendario de redes y ferias con la fecha de presentación. Dejamos un protocolo si la copia entra por marketplace o por aduana.",
+          "en": "We choose the pieces whose copy would kill the season. We prepare clear representations. We align the social and fair calendar with the filing date. We leave a protocol if a copy enters through a marketplace or customs."
+        }
+      ]
+    }
+  ],
+  "takeaways": [
+    {
+      "es": "Diez años, no renovables: hay que elegir bien qué piezas pedir.",
+      "en": "Ten years, non-renewable: choose carefully which pieces to file."
+    },
+    {
+      "es": "Divulgar antes de solicitar puede tumbar la novedad.",
+      "en": "Disclosing before filing can destroy novelty."
+    },
+    {
+      "es": "Marca, patente y diseño no se sustituyen entre sí.",
+      "en": "Trademark, patent and design do not replace each other."
+    }
+  ]
+}

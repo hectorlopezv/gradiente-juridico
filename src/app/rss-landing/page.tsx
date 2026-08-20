@@ -1,6 +1,4 @@
 import { Rss } from "lucide-react";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { PageHero } from "@/components/page-hero";
 import { pageMeta } from "@/lib/seo";
 
@@ -27,7 +25,6 @@ const feeds = [
 export default function RssLandingPage() {
   return (
     <>
-      <Header />
       <main className="overflow-x-hidden">
         <PageHero
           kicker="RSS"
@@ -75,7 +72,6 @@ export default function RssLandingPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   );
 }

@@ -1,4 +1,6 @@
+import { officesEn } from "@/lib/content-en";
 import { contact } from "@/lib/data";
+import type { Locale } from "@/lib/locale";
 import { media } from "@/lib/media";
 
 export interface Office {
@@ -14,6 +16,18 @@ export interface Office {
   email: string;
   image: string;
   mapImage: string;
+}
+
+export function listOffices(locale: Locale = "es"): Office[] {
+  if (locale !== "en") return offices;
+  return offices.map((office) => ({
+    ...office,
+    ...officesEn[office.slug],
+  }));
+}
+
+export function getOffice(slug: string, locale: Locale = "es") {
+  return listOffices(locale).find((office) => office.slug === slug);
 }
 
 export const offices: Office[] = [

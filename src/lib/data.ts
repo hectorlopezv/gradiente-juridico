@@ -1,13 +1,26 @@
 import {
+  Building2,
   Circle,
   Copyright,
-  Handshake,
+  FileText,
+  Globe,
   Lightbulb,
+  Megaphone,
   PenTool,
+  Scale,
   Shield,
+  ShieldCheck,
   TrendingUp,
   type LucideIcon,
 } from "lucide-react";
+import {
+  servicesEn,
+  statsEn,
+  trendingEn,
+  valuePillarsEn,
+  whyChooseUsEn,
+} from "@/lib/content-en";
+import type { Locale } from "@/lib/locale";
 import { media } from "@/lib/media";
 
 export interface Service {
@@ -43,9 +56,15 @@ export const contact = {
 };
 
 export const brand = {
-  tagline: "Especialistas en Propiedad Intelectual.",
-  taglineHighlight: "Protegemos tus ideas. Potenciamos tu futuro.",
-  missionBanner: "TU INNOVACIÓN NUESTRA MISIÓN",
+  tagline: "Especialistas en empresa y propiedad intelectual.",
+  taglineHighlight: "El derecho de crear.",
+  missionBanner: "PROTEGE LO QUE CREAS",
+  aboutShort:
+    "Propiedad intelectual y derecho empresarial, con visión estratégica y enfoque práctico. Protegemos activos, estructuramos negocios y respaldamos decisiones clave para el crecimiento de cada empresa.",
+  aboutFirm:
+    "Firma boutique con especial énfasis en propiedad intelectual, integrada con soluciones en derecho societario, comercial, contractual y estratégico para empresas que crean, crecen y compiten.",
+  aboutPractice:
+    "Boutique legal con enfoque en propiedad intelectual y derecho de los negocios. Acompañamos empresas y proyectos en la protección de sus activos, la estructuración de sus relaciones comerciales y la prevención de riesgos.",
   location: contact.location,
   locationDetail: contact.locationDetail,
   email: contact.email,
@@ -53,6 +72,25 @@ export const brand = {
   contactPerson: contact.person,
   whatsappUrl: contact.whatsappUrl,
 };
+
+export function localizedBrand(locale: "es" | "en") {
+  if (locale === "en") {
+    return {
+      ...brand,
+      tagline: "Specialists in business and intellectual property.",
+      taglineHighlight: "The right to create.",
+      missionBanner: "PROTECT WHAT YOU CREATE",
+      aboutShort:
+        "Intellectual property and business law, with a strategic view and a practical approach. We protect assets, structure deals and back the decisions that grow a company.",
+      aboutFirm:
+        "A boutique firm with a special focus on intellectual property, integrated with corporate, commercial, contractual and strategic advice for companies that create, grow and compete.",
+      aboutPractice:
+        "A legal boutique focused on intellectual property and business law. We work with companies and projects to protect their assets, structure commercial relationships and prevent risk.",
+      locationDetail: "In-person and online",
+    };
+  }
+  return brand;
+}
 
 export const images = {
   hero: media.hero,
@@ -240,50 +278,271 @@ export const services: Service[] = [
     icon: Copyright,
   },
   {
-    slug: "asesoramiento-estrategico",
-    title: "Asesoramiento Estratégico",
+    slug: "contratos-y-negocios",
+    title: "Contratos y negocios",
     description:
-      "PI como decisión de negocio: secretos, due diligence, socios y el mapa de qué registrar y qué no.",
-    body: "Registrar no siempre es lo primero. A veces hay que cerrar un NDA, separar background IP o decidir que el algoritmo no sale en una patente. Integramos el activo al contrato y a la ronda.",
+      "Elaboración, revisión y negociación de contratos comerciales y civiles: prestación de servicios, distribución, compraventa, colaboración, alianzas y demás relaciones empresariales.",
+    body: "El contrato es el mapa de la relación: qué se entrega, quién asume el riesgo y cómo se sale. Redactamos, revisamos y negociamos con criterio de negocio, no de formulario genérico.",
     framework:
-      "Secretos empresariales: Decisión 486 y Ley 256 de 1996 (competencia desleal). La información debe ser secreta, tener valor por no ser conocida y estar sujeta a medidas razonables de reserva. Un NDA solo no convierte en secreto lo que ya es público.",
+      "Código Civil y Código de Comercio colombianos, y las cláusulas especiales que el tipo de operación exige: garantía, confidencialidad, PI, no competencia y resolución de controversias.",
     context: [
-      "En una ronda o en una colaboración, el inversionista pregunta quién es dueño del código, de la marca y de los contratos con desarrolladores. El due diligence de PI es esa respuesta, ordenada.",
-      "La estrategia también es negativa: qué no patentar para no divulgar, qué no marcar si el signo es débil, qué no licenciar sin control de calidad. El entregable es un mapa que dirección puede ejecutar.",
+      "Una alianza, una distribución o un desarrollo a terceros sin perímetro claro deja el activo y el flujo de caja en el aire. El documento tiene que poder ejecutarse el día del conflicto.",
+      "Coordinamos el contrato con la titularidad de marca, código u obra cuando el negocio depende de un intangible.",
     ],
     when: [
-      "Hay un socio, un fabricante o un inversionista a punto de entrar",
-      "El know-how está en la cabeza de dos personas y en un Drive abierto",
-      "Vas a otro país o a una licencia cruzada",
-      "Necesitas un paquete de PI legible para due diligence",
+      "Vas a firmar prestación de servicios, distribución, compraventa o colaboración",
+      "Hay una alianza o un canal que usa tu marca o tu know-how",
+      "El contrato vigente no cubre lo que el negocio ya hace",
+      "Necesitas negociar con un proveedor, un socio o un cliente clave",
     ],
     process: [
-      "Diagnóstico: marcas, patentes, diseños, autor, secretos y contratos",
-      "Prioridad: qué registrar, qué reservar, qué ceder o licenciar",
-      "Documentos: NDA, desarrollo, colaboración y licencias",
-      "Protocolo de acceso a información y de reacción ante fugas o copias",
+      "Lectura del objetivo comercial y de los riesgos de la relación",
+      "Redacción o marcado del contrato, con alternativas de negociación",
+      "Alineación con PI, confidencialidad y salida",
+      "Cierre y, si aplica, seguimiento de anexos y renovaciones",
     ],
     typicalIssues: [
-      "Freelancers sin cesión y un repo compartido",
-      "Socios que aportan tecnología previa sin definir background IP",
-      "Listas de clientes o fórmulas tratadas como secretas sin medidas reales",
-      "Una ronda en pocas semanas y el portafolio desordenado",
+      "Un PDF de internet que no cubre PI, mora ni terminación",
+      "El proveedor retiene entregables o herramientas",
+      "Hay dos versiones firmadas y nadie sabe cuál rige",
+      "La alianza ya opera y el contrato sigue en borrador",
     ],
     audience:
-      "Fundadores y equipos de dirección que necesitan que la PI aguante una ronda, un socio, una licencia o una salida a otro mercado.",
+      "Empresas y proyectos que necesitan relaciones comerciales documentadas y negociables.",
     includes: [
-      "Due diligence de propiedad intelectual",
-      "Secretos empresariales y medidas de reserva",
-      "Contratos de colaboración y de desarrollo",
-      "Preparación para inversión o expansión",
+      "Prestación de servicios, distribución y compraventa",
+      "Colaboración, alianzas y joint ventures contractuales",
+      "Revisión y negociación de contratos de contraparte",
+      "Cláusulas de PI, confidencialidad y salida",
     ],
     image: media.office,
-    icon: Handshake,
+    icon: FileText,
+  },
+  {
+    slug: "sociedades-y-gobierno-corporativo",
+    title: "Sociedades y gobierno corporativo",
+    description:
+      "Constitución de sociedades, reformas estatutarias, acuerdos de accionistas, actas, juntas, asambleas, reglamentos y acompañamiento en conflictos societarios.",
+    body: "La sociedad es el vehículo del negocio. Si los estatutos, las actas o el acuerdo de accionistas no coinciden con cómo se decide en la práctica, el conflicto llega tarde y caro.",
+    framework:
+      "Código de Comercio, Ley 1258 de 2008 (SAS) y las reglas de gobierno que el tipo societario y los accionistas pacten. Las decisiones que no quedan en acta o en reforma suelen ser las que después no se pueden oponer.",
+    context: [
+      "Constitución, reformas, aumentos de capital y entrada o salida de socios exigen un rastro que el registro y los terceros puedan leer.",
+      "El acuerdo de accionistas ordena lo que los estatutos no cubren: arrastre, tag along, deadlock y reglas de información.",
+    ],
+    when: [
+      "Vas a constituir o a reformar una sociedad",
+      "Entra o sale un socio, o hay una ronda",
+      "Las juntas y asambleas no tienen actas ni reglamentos claros",
+      "Hay un conflicto entre socios o con la administración",
+    ],
+    process: [
+      "Diagnóstico de estatutos, libro de actas y estructura de capital",
+      "Constitución, reforma o acuerdo de accionistas según el objetivo",
+      "Acompañamiento de juntas, asambleas y reglamentos",
+      "Ruta de solución si ya hay controversia societaria",
+    ],
+    typicalIssues: [
+      "La compañía opera y la SAS no está inscrita o está desactualizada",
+      "Hay socios de hecho sin participación documentada",
+      "Un administrador decide sin facultades o sin actas",
+      "El pacto de socios contradice los estatutos",
+    ],
+    audience:
+      "Fundadores, socios y compañías que necesitan un vehículo societario alineado con la decisión real del negocio.",
+    includes: [
+      "Constitución y reformas estatutarias",
+      "Acuerdos de accionistas",
+      "Actas, juntas, asambleas y reglamentos",
+      "Acompañamiento en conflictos societarios",
+    ],
+    image: media.corporate,
+    icon: Building2,
+  },
+  {
+    slug: "competencia-consumo-y-publicidad",
+    title: "Competencia, consumo y publicidad",
+    description:
+      "Asesoría preventiva y defensa frente a competencia desleal, publicidad, promociones, términos y condiciones, reclamaciones y procesos sancionatorios.",
+    body: "La campaña, el empaque y los términos de la plataforma son actos jurídicos. Los revisamos antes de salir al mercado y defendemos cuando hay un reclamo, un competidor o una autoridad.",
+    framework:
+      "Ley 256 de 1996 (competencia desleal), Estatuto del Consumidor (Ley 1480 de 2011) y las reglas de publicidad y promociones ante la SIC. Un claim que no se sostiene es un riesgo de sanción y de reputación.",
+    context: [
+      "Promociones, T&C, políticas de devolución y publicidad comparativa tienen que coincidir con lo que el negocio puede cumplir.",
+      "La defensa preventiva sale más barata que el proceso sancionatorio: revisamos el material antes del drop o de la pauta.",
+    ],
+    when: [
+      "Lanzas una campaña, una promoción o un marketplace",
+      "Un competidor copia el empaque, el claim o el canal",
+      "Hay una reclamación de consumidor o un requerimiento de la SIC",
+      "Los términos y condiciones no cubren lo que ya vendes",
+    ],
+    process: [
+      "Revisión de publicidad, empaque, T&C y promociones",
+      "Ajustes preventivos y protocolo de respuesta a reclamos",
+      "Defensa en competencia desleal o en consumo",
+      "Acompañamiento en procesos sancionatorios",
+    ],
+    typicalIssues: [
+      "El claim de la pauta no se puede probar",
+      "La promoción no tiene mecánica ni vigencia claras",
+      "Un tercero usa un signo o un look-alike en el mercado",
+      "Los T&C copiados no aplican al producto ni a Colombia",
+    ],
+    audience:
+      "Equipos de marketing, e-commerce y compañías que venden al consumidor o compiten en un mercado sensible al claim.",
+    includes: [
+      "Revisión de publicidad, promociones y empaque",
+      "Términos y condiciones y políticas de consumo",
+      "Competencia desleal preventiva y contenciosa",
+      "Reclamaciones y procesos sancionatorios",
+    ],
+    image: media.hospitality,
+    icon: Megaphone,
+  },
+  {
+    slug: "litigios-y-solucion-de-controversias",
+    title: "Litigios y solución de controversias",
+    description:
+      "Representación en procesos civiles, comerciales, societarios, administrativos y de propiedad intelectual, con enfoque en riesgo y estrategia empresarial.",
+    body: "El litigio es una decisión de negocio: costo, plazo, prueba y reputación. Representamos en la vía que mejor cierra el riesgo, no en la que más se parece a un expediente de oficio.",
+    framework:
+      "Procesos civiles y comerciales, controversias societarias, actuaciones administrativas y PI (SIC, DNDA y jueces). La vía se elige según el objetivo: cese, indemnización, anulación o un acuerdo que se pueda cumplir.",
+    context: [
+      "Antes de demandar o de contestar hay que saber qué se puede probar y qué se gana si se gana. A veces el cese o la negociación es el resultado útil.",
+      "Coordinamos el proceso con el activo: marca, contrato, sociedad o campaña, para que la estrategia no se contradiga entre foros.",
+    ],
+    when: [
+      "Hay un incumplimiento contractual o un conflicto entre socios",
+      "Un tercero usa tu signo, tu diseño o tu contenido",
+      "Llegó un requerimiento administrativo o una demanda",
+      "Necesitas una estrategia de salida, no solo un escrito",
+    ],
+    process: [
+      "Diagnóstico de hechos, pruebas y objetivo comercial",
+      "Elección de vía y de pretensiones",
+      "Representación y, si conviene, negociación paralela",
+      "Cierre: sentencia, conciliación o protocolo para que no se repita",
+    ],
+    typicalIssues: [
+      "Se demandó sin inventario de pruebas",
+      "Hay tres foros abiertos sobre el mismo conflicto",
+      "El cliente quiere “ganar” sin definir qué es ganar",
+      "El acuerdo verbal ya se rompió y no hay contrato útil",
+    ],
+    audience:
+      "Empresas y titulares que enfrentan un conflicto y necesitan una ruta con criterio de riesgo, no de inercia procesal.",
+    includes: [
+      "Procesos civiles, comerciales y societarios",
+      "Vía administrativa y de propiedad intelectual",
+      "Estrategia de pretensiones y de prueba",
+      "Negociación y cierre del conflicto",
+    ],
+    image: media.strategy,
+    icon: Scale,
+  },
+  {
+    slug: "compliance-y-gestion-de-riesgos",
+    title: "Compliance y gestión de riesgos",
+    description:
+      "Diseño de políticas, matrices, protocolos y programas de cumplimiento en contratación, gobierno corporativo, consumo, competencia, privacidad y prevención de riesgos.",
+    body: "El cumplimiento no es un PDF en Drive: es una matriz que alguien usa. Diseñamos políticas y protocolos que el equipo puede aplicar en contratación, gobierno, consumo, competencia y privacidad.",
+    framework:
+      "Normas de consumo, competencia, datos personales (Ley 1581 de 2012), gobierno societario y las medidas internas que el tamaño de la empresa puede sostener. El programa tiene que ser proporcional y demostrable.",
+    context: [
+      "Un requerimiento de autoridad o un due diligence de inversionista pregunta por políticas reales, no por intención. Dejamos rastro: quién aprueba, quién accede, qué se registra.",
+      "Priorizamos los riesgos que ya operan: contratos con terceros, tratamiento de datos, claims de publicidad y actas de junta.",
+    ],
+    when: [
+      "Vas a una ronda, a un cliente grande o a un proveedor que pide compliance",
+      "No hay políticas de datos, de contratación o de conflictos de interés",
+      "Hubo un incidente y no existe protocolo de respuesta",
+      "El crecimiento dejó atrás los controles de cuando eran tres personas",
+    ],
+    process: [
+      "Mapa de riesgos y de normas que realmente aplican",
+      "Políticas, matrices y protocolos ejecutables",
+      "Capacitación breve de quién decide y quién documenta",
+      "Revisión periódica y ajuste cuando cambia el negocio",
+    ],
+    typicalIssues: [
+      "Hay una política copiada que nadie aplica",
+      "Los datos de clientes están en un Excel sin responsable",
+      "Los contratos se firman sin checklist ni aprobación",
+      "Un incidente se gestionó por WhatsApp y no quedó rastro",
+    ],
+    audience:
+      "Compañías que necesitan un programa de cumplimiento proporcional a su operación, no un manual decorativo.",
+    includes: [
+      "Políticas y matrices de riesgo",
+      "Protocolos de contratación y de gobierno",
+      "Consumo, competencia y privacidad",
+      "Prevención y respuesta a incidentes",
+    ],
+    image: media.map,
+    icon: ShieldCheck,
+  },
+  {
+    slug: "inversion-extranjera-y-negocios-en-colombia",
+    title: "Inversión extranjera y negocios en Colombia",
+    description:
+      "Acompañamiento a compañías extranjeras en constitución de sociedades, sucursales, filiales, contratos locales, protección de marcas y operación empresarial en Colombia.",
+    body: "Entrar a Colombia no es solo inscribir una sociedad: es el vehículo, los contratos locales, la marca y las reglas con las que se opera. Acompañamos a la compañía extranjera desde el primer mapa hasta la operación.",
+    framework:
+      "Régimen de sociedades, sucursales de sociedad extranjera, contratos locales y PI ante la SIC. La inversión y la operación se alinean con el vehículo que el negocio realmente necesita — sucursal, SAS o contrato — no con el que suena más familiar en la casa matriz.",
+    context: [
+      "El error frecuente es copiar el contrato de otro país o usar una marca que en Colombia ya tiene un tercero. El mapa local se hace antes de gastar en equipo, bodega o pauta.",
+      "Coordinamos constitución, poderes, contratos con distribuidores o proveedores, y el registro de marca cuando el signo va a usarse aquí.",
+    ],
+    when: [
+      "Vas a constituir una SAS, una sucursal o una filial en Colombia",
+      "Necesitas contratos locales de distribución, servicios o empleo clave",
+      "La marca o el producto ya se usa o se va a lanzar en el país",
+      "La casa matriz pide un interlocutor que una societario, contractual y PI",
+    ],
+    process: [
+      "Diagnóstico del vehículo y de los riesgos de entrar al mercado",
+      "Constitución o sucursal, poderes y gobierno mínimo",
+      "Contratos locales y protección de marca",
+      "Acompañamiento de la operación y de los ajustes del primer año",
+    ],
+    typicalIssues: [
+      "Se eligió sucursal cuando el negocio pedía SAS, o al revés",
+      "El contrato marco extranjero no es ejecutable aquí",
+      "La marca está pedida por un tercero en la SIC",
+      "No hay apoderado ni actas para operar con bancos y proveedores",
+    ],
+    audience:
+      "Compañías extranjeras y grupos que van a constituir, contratar o marcar en Colombia.",
+    includes: [
+      "Constitución de sociedades, sucursales y filiales",
+      "Contratos locales de operación",
+      "Protección de marcas en Colombia",
+      "Acompañamiento de la operación empresarial",
+    ],
+    image: media.bogota,
+    icon: Globe,
   },
 ];
 
-export function getService(slug: string) {
-  return services.find((service) => service.slug === slug);
+export function listServices(locale: Locale = "es"): Service[] {
+  if (locale !== "en") return services;
+  return services.map((service) => ({
+    ...service,
+    ...servicesEn[service.slug],
+  }));
+}
+
+export function getService(slug: string, locale: Locale = "es") {
+  return listServices(locale).find((service) => service.slug === slug);
+}
+
+export function listValuePillars(locale: Locale = "es") {
+  if (locale !== "en") return valuePillars;
+  return valuePillars.map((pillar, index) => ({
+    ...pillar,
+    label: valuePillarsEn[index]?.label ?? pillar.label,
+  }));
 }
 
 export const newsItems = [
@@ -326,18 +585,18 @@ export const trending = [
     image: media.techLab,
   },
   {
-    title: "Asesoramiento Estratégico",
+    title: "Contratos y negocios",
     description:
-      "Soluciones a medida para potenciar tus activos intangibles.",
-    href: "/practica/asesoramiento-estrategico",
+      "Elaboración, revisión y negociación de relaciones empresariales.",
+    href: "/practica/contratos-y-negocios",
     image: media.office,
   },
 ];
 
 export const stats = [
   {
-    end: 5,
-    suffix: "+",
+    end: 9,
+    suffix: "",
     label: "áreas de práctica",
   },
   {
@@ -379,6 +638,30 @@ export const whyChooseUs = [
     body: "Trabajamos con reserva absoluta sobre tus activos y con recomendaciones claras: riesgos, alternativas y el siguiente paso — en lenguaje que se puede ejecutar.",
   },
 ];
+
+export function listTrending(locale: Locale = "es") {
+  if (locale !== "en") return trending;
+  return trending.map((item, index) => ({
+    ...item,
+    ...trendingEn[index],
+  }));
+}
+
+export function listStats(locale: Locale = "es") {
+  if (locale !== "en") return stats;
+  return stats.map((stat, index) => ({
+    ...stat,
+    label: statsEn[index]?.label ?? stat.label,
+  }));
+}
+
+export function listWhyChoose(locale: Locale = "es") {
+  if (locale !== "en") return whyChooseUs;
+  return whyChooseUs.map((item, index) => ({
+    ...item,
+    ...whyChooseUsEn[index],
+  }));
+}
 
 export const insights = [
   { label: "Protección de marcas", href: "/practica/registro-de-marcas" },

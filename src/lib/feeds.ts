@@ -1,14 +1,15 @@
-import { successCases } from "@/lib/cases";
+import { listInsights } from "@/lib/insights";
 import { newsItems } from "@/lib/data";
 import { rssXml, siteUrl } from "@/lib/rss";
 
 export function insightRssXml() {
   const origin = siteUrl();
+  const items = listInsights("es");
   return rssXml({
     title: "Gradiente Jurídico — Insight",
     link: `${origin}/insight`,
     description: "Insight sobre propiedad intelectual.",
-    items: successCases.map((item) => ({
+    items: items.map((item) => ({
       title: item.title,
       link: `${origin}/insight/${item.slug}`,
       category: item.kicker,

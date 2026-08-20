@@ -1,32 +1,38 @@
 import Image from "next/image";
-import Link from "next/link";
 import { ChatCta } from "@/components/chat-cta";
 import { CtaLink } from "@/components/cta-link";
+import { LocaleLink } from "@/components/language-switch";
 import { Reveal } from "@/components/reveal";
-import { brand, images, services, whyChooseUs } from "@/lib/data";
+import {
+  images,
+  listServices,
+  listWhyChoose,
+  localizedBrand,
+} from "@/lib/data";
+import { messages } from "@/lib/messages";
+import type { Locale } from "@/lib/locale";
 
-export function FutureFirm() {
+export function FutureFirm({ locale = "es" }: { locale?: Locale }) {
+  const t = messages(locale);
+  const copy = localizedBrand(locale);
+  const practice = listServices(locale);
+  const why = listWhyChoose(locale);
   return (
     <>
       <section id="nosotros" className="bg-white py-20 lg:py-28">
         <div className="mx-auto grid max-w-[1400px] items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-10">
           <Reveal>
             <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Sobre la firma
+              {t.aboutKicker}
             </p>
             <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
-              Construimos una firma para el futuro del negocio
+              {t.aboutTitle}
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              La firma del futuro no solo entrega un concepto jurídico: entiende
-              el activo, el mercado y la decisión que el cliente tiene que
-              tomar. Gradiente Jurídico acompaña a empresas, creadores y
-              titulares de intangibles en la protección de derechos, la
-              estructuración de relaciones comerciales y la solución de
-              controversias.
+              {t.firmLead} {copy.aboutFirm}
             </p>
-            <CtaLink href="/nosotros" variant="red" className="mt-8">
-              Conoce nuestra estrategia
+            <CtaLink href="/nosotros" variant="red" className="mt-8" locale={locale}>
+              {t.aboutStrategy}
             </CtaLink>
           </Reveal>
           <Reveal>
@@ -47,26 +53,24 @@ export function FutureFirm() {
         <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-10">
           <Reveal>
             <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Áreas de práctica
+              {t.practiceAreas}
             </p>
             <h2 className="mt-4 max-w-4xl font-heading text-4xl font-bold uppercase leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
-              Nuestros servicios
+              {t.ourServices}
             </h2>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-              Asesoría en propiedad intelectual para proteger activos,
-              estructurar el negocio y prevenir riesgos — en Colombia y en el
-              exterior.
+              {copy.aboutPractice}
             </p>
           </Reveal>
 
           <div className="mt-14 grid gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
-            {services.map((service, index) => (
-              <Reveal
-                key={service.title}
-                delay={index * 90}
-                className={index === 4 ? "lg:col-span-1" : undefined}
-              >
-                <Link href={`/practica/${service.slug}`} className="group block">
+            {practice.map((service, index) => (
+              <Reveal key={service.title} delay={index * 90}>
+                <LocaleLink
+                  href={`/practica/${service.slug}`}
+                  locale={locale}
+                  className="group block"
+                >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={service.image}
@@ -83,9 +87,9 @@ export function FutureFirm() {
                     {service.body}
                   </p>
                   <span className="cta-link cta-link-red mt-5">
-                    Más información
+                    {t.moreInfo}
                   </span>
-                </Link>
+                </LocaleLink>
               </Reveal>
             ))}
           </div>
@@ -107,17 +111,15 @@ export function FutureFirm() {
         <div className="relative z-10 mx-auto flex min-h-[560px] max-w-[1400px] items-center px-4 py-20 sm:px-6 lg:px-10">
           <Reveal className="max-w-3xl">
             <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-white/70">
-              Por qué Gradiente Jurídico
+              {t.whyUs}
             </p>
             <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
-              Una visión jurídica con enfoque empresarial
+              {t.visionTitle}
             </h2>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80">
-              ∇(J) resume cómo trabajamos: protección, innovación y valor. El
-              criterio legal está al servicio de lo que diferencia a tu empresa
-              y de las relaciones que hacen posible su crecimiento.
+              {t.nablaLine}
             </p>
-            <ChatCta className="mt-8">Hablemos de tu caso</ChatCta>
+            <ChatCta className="mt-8">{t.talkCase}</ChatCta>
           </Reveal>
         </div>
       </section>
@@ -125,7 +127,7 @@ export function FutureFirm() {
       <section className="bg-white py-20 lg:py-28">
         <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-10">
           <div className="grid gap-0 md:grid-cols-2">
-            {whyChooseUs.map((item, index) => (
+            {why.map((item, index) => (
               <Reveal key={item.number} delay={index * 80}>
                 <article className="group border-t border-black/10 px-0 py-10 md:px-10 md:even:border-l">
                   <p className="text-[13px] font-semibold tracking-[0.14em] text-primary">
@@ -147,9 +149,9 @@ export function FutureFirm() {
       <section className="bg-primary">
         <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-6 px-4 py-10 sm:px-6 lg:flex-row lg:items-center lg:px-10">
           <p className="font-heading text-2xl font-semibold uppercase tracking-wide text-white sm:text-3xl">
-            {brand.missionBanner}
+            {copy.missionBanner}
           </p>
-          <ChatCta className="shrink-0">Hablemos</ChatCta>
+          <ChatCta className="shrink-0">{t.letsTalk}</ChatCta>
         </div>
       </section>
     </>

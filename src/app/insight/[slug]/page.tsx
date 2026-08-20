@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { ChatCta } from "@/components/chat-cta";
 import { CtaLink } from "@/components/cta-link";
-import { getCase, successCases } from "@/lib/cases";
+import { LocaleLink } from "@/components/language-switch";
+import { listInsights, getInsight } from "@/lib/insights";
+import { getLocale } from "@/lib/locale-server";
+import { messages } from "@/lib/messages";
 import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
-  return successCases.map((item) => ({ slug: item.slug }));
+  return listInsights("es").map((item) => ({ slug: item.slug }));
 }
 
 export async function generateMetadata({
@@ -19,12 +19,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const item = getCase(slug);
+  const locale = await getLocale();
+  const item = getInsight(slug, locale);
   if (!item) return {};
   return pageMeta({
     title: `${item.title} | Insight`,
     description: item.summary,
-    path: `/insight/${item.slug}`,
+    path: locale === "en" ? `/en/insight/${item.slug}` : `/insight/${item.slug}`,
     image: item.image,
     imageAlt: item.title,
     type: "article",
@@ -37,15 +38,15 @@ export default async function InsightArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const item = getCase(slug);
+  const locale = await getLocale();
+  const t = messages(locale);
+  const item = getInsight(slug, locale);
   if (!item) notFound();
 
-  const others = successCases.filter((entry) => entry.slug !== item.slug);
+  const others = listInsights(locale).filter((entry) => entry.slug !== item.slug);
 
   return (
-    <>
-      <Header />
-      <main className="overflow-x-hidden">
+    <main className="overflow-x-hidden">
         <section className="relative min-h-[48svh] overflow-hidden bg-black pt-24 text-white lg:min-h-[56svh]">
           <Image
             src={item.image}
@@ -92,7 +93,7 @@ export default async function InsightArticlePage({
 
             <aside className="mt-4 border-t border-black/10 py-10">
               <h2 className="font-heading text-2xl font-semibold uppercase tracking-wide">
-                Para llevar
+                {t.takeaways}
               </h2>
               <ul className="mt-6 divide-y divide-black/10 border-t border-black/10">
                 {item.takeaways.map((line) => (
@@ -104,17 +105,14 @@ export default async function InsightArticlePage({
             </aside>
 
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Análisis general sobre el marco en Colombia. No es asesoría
-              jurídica ni describe un caso nominado de cliente. Cifras de
-              solicitudes 2025: SIC, citadas vía el estudio IP.CO (PONS IP).
-              Criterio sobre IA: pronunciamientos públicos de la DNDA.
+              {t.insightDisclaimer}
             </p>
             <ChatCta variant="red" className="mt-8">
-              Hablemos
+              {t.talk}
             </ChatCta>
             <div className="mt-10">
               <CtaLink href="/insight" variant="dark">
-                Todo el insight
+                {t.allInsight}
               </CtaLink>
             </div>
           </div>
@@ -123,26 +121,28 @@ export default async function InsightArticlePage({
         <section className="border-t border-black/10 bg-white py-16">
           <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-10">
             <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Más insight
+              {t.moreInsight}
             </p>
             <ul className="mt-8 grid gap-8 md:grid-cols-3">
               {others.slice(0, 3).map((entry) => (
                 <li key={entry.slug}>
-                  <Link href={`/insight/${entry.slug}`} className="group block">
+                  <LocaleLink
+                    href={`/insight/${entry.slug}`}
+                    locale={locale}
+                    className="group block"
+                  >
                     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                       {entry.kicker}
                     </p>
                     <h3 className="mt-2 font-heading text-xl font-semibold uppercase tracking-wide group-hover:text-primary">
                       {entry.title}
                     </h3>
-                  </Link>
+                  </LocaleLink>
                 </li>
               ))}
             </ul>
           </div>
         </section>
       </main>
-      <Footer />
-    </>
   );
 }

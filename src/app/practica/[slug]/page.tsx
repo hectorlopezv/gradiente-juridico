@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { AreaPage } from "@/components/area-page";
-import { getService, services } from "@/lib/data";
+import { getService, listServices, services } from "@/lib/data";
+import { getLocale } from "@/lib/locale-server";
+import { prefixHref } from "@/lib/locale";
+import { messages } from "@/lib/messages";
 import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -16,12 +17,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const service = getService(slug);
+  const locale = await getLocale();
+  const service = getService(slug, locale);
   if (!service) return {};
   return pageMeta({
     title: service.title,
     description: service.description,
-    path: `/practica/${service.slug}`,
+    path: prefixHref(`/practica/${service.slug}`, locale),
     image: service.image,
     imageAlt: service.title,
   });
@@ -33,37 +35,36 @@ export default async function PracticaAreaPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const service = getService(slug);
+  const locale = await getLocale();
+  const t = messages(locale);
+  const service = getService(slug, locale);
   if (!service) notFound();
 
-  const others = services.filter((item) => item.slug !== service.slug);
+  const others = listServices(locale).filter((item) => item.slug !== service.slug);
 
   return (
-    <>
-      <Header />
-      <AreaPage
-        kicker="Práctica"
-        title={service.title}
-        description={service.description}
-        image={service.image}
-        framework={service.framework}
-        context={service.context}
-        when={service.when}
-        process={service.process}
-        typicalIssues={service.typicalIssues}
-        audience={service.audience}
-        includes={service.includes}
-        ctaLabel="Hablemos de esta área"
-        relatedKicker="Otras áreas"
-        related={others.map((item) => ({
-          href: `/practica/${item.slug}`,
-          title: item.title,
-          description: item.description,
-        }))}
-        relatedIndexHref="/practica"
-        relatedIndexLabel="Todas las áreas"
-      />
-      <Footer />
-    </>
+    <AreaPage
+      locale={locale}
+      kicker={t.practice}
+      title={service.title}
+      description={service.description}
+      image={service.image}
+      framework={service.framework}
+      context={service.context}
+      when={service.when}
+      process={service.process}
+      typicalIssues={service.typicalIssues}
+      audience={service.audience}
+      includes={service.includes}
+      ctaLabel={t.talkThisArea}
+      relatedKicker={t.otherAreas}
+      related={others.map((item) => ({
+        href: `/practica/${item.slug}`,
+        title: item.title,
+        description: item.description,
+      }))}
+      relatedIndexHref="/practica"
+      relatedIndexLabel={t.allAreas}
+    />
   );
 }

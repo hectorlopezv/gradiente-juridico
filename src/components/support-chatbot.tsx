@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MessageCircle, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -13,6 +14,8 @@ import {
   type ChatReply,
   type QuickAction,
 } from "@/lib/chatbot";
+import { localeFromPathname, type Locale } from "@/lib/locale";
+import { messages as ui } from "@/lib/messages";
 
 interface Message {
   id: number;
@@ -42,7 +45,11 @@ function toBotMessage(reply: ChatReply): Message {
   };
 }
 
-export function SupportChatbot() {
+export function SupportChatbot({ locale: localeProp = "es" }: { locale?: Locale }) {
+  const pathname = usePathname() || "/";
+  const locale =
+    localeFromPathname(pathname) === "en" ? "en" : localeProp;
+  const t = ui(locale);
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
@@ -59,10 +66,15 @@ export function SupportChatbot() {
   }, []);
 
   useEffect(() => {
+    setMessages([]);
+    setInput("");
+  }, [locale]);
+
+  useEffect(() => {
     if (open && messages.length === 0) {
-      setMessages([toBotMessage(getWelcomeReply())]);
+      setMessages([toBotMessage(getWelcomeReply(locale))]);
     }
-  }, [open, messages.length]);
+  }, [open, messages.length, locale]);
 
   useEffect(() => {
     if (open) {
@@ -90,7 +102,7 @@ export function SupportChatbot() {
     setTyping(true);
 
     window.setTimeout(() => {
-      setMessages((prev) => [...prev, toBotMessage(getBotReply(trimmed))]);
+      setMessages((prev) => [...prev, toBotMessage(getBotReply(trimmed, locale))]);
       setTyping(false);
     }, 420);
   }
@@ -114,7 +126,7 @@ export function SupportChatbot() {
             "max-md:rounded-t-2xl md:rounded-sm"
           )}
           role="dialog"
-          aria-label="Asistente de Gradiente Jurídico"
+          aria-label={t.openChat}
         >
           <header className="flex items-center justify-between bg-[#075E54] px-4 py-3 text-white">
             <div className="min-w-0">
@@ -122,7 +134,9 @@ export function SupportChatbot() {
                 Gradiente Jurídico
               </p>
               <p className="text-[11px] text-white/80">
-                Asistente · Te conectamos por WhatsApp
+                {locale === "en"
+                  ? "Assistant · We connect you on WhatsApp"
+                  : "Asistente · Te conectamos por WhatsApp"}
               </p>
             </div>
             <Button
@@ -130,7 +144,7 @@ export function SupportChatbot() {
               size="icon-sm"
               className="text-white hover:bg-white/10 hover:text-white"
               onClick={() => setOpen(false)}
-              aria-label="Cerrar chat"
+              aria-label={t.navClose}
             >
               <X className="size-4" />
             </Button>
@@ -155,7 +169,7 @@ export function SupportChatbot() {
             ))}
             {typing && (
               <div className="mr-auto rounded-[1.15rem] rounded-bl-[4px] bg-white px-3 py-2 text-sm text-[#667781] shadow-[0_1px_0.5px_rgba(0,0,0,0.13)]">
-                Escribiendo…
+                {t.loading}
               </div>
             )}
           </div>
@@ -177,7 +191,7 @@ export function SupportChatbot() {
                     <path d="M17.47 14.38c-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.15-.42-2.2-1.35-.81-.72-1.36-1.61-1.52-1.88-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.01-.22-.53-.45-.46-.61-.46h-.52c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29s.99 2.66 1.13 2.84c.14.18 1.95 2.98 4.73 4.18.66.28 1.18.45 1.58.58.66.21 1.27.18 1.75.11.53-.08 1.6-.65 1.83-1.28.22-.63.22-1.17.16-1.28-.07-.11-.25-.18-.52-.32z" />
                     <path d="M12.04 2C6.5 2 2.02 6.48 2.02 12c0 1.77.46 3.45 1.28 4.91L2 22l5.25-1.38A9.96 9.96 0 0 0 12.04 22C17.56 22 22 17.52 22 12S17.56 2 12.04 2zm0 18.18c-1.64 0-3.22-.44-4.58-1.26l-.33-.2-3.11.82.83-3.04-.21-.31A8.16 8.16 0 0 1 3.86 12c0-4.5 3.67-8.16 8.18-8.16 4.5 0 8.17 3.66 8.17 8.16 0 4.51-3.67 8.18-8.17 8.18z" />
                   </svg>
-                  {lastBot.whatsappLabel ?? "Continuar por WhatsApp"}
+                  {lastBot.whatsappLabel ?? t.chatContinueWa}
                 </Link>
               ) : null}
               {lastBot.suggestions && lastBot.suggestions.length > 0 ? (
@@ -215,16 +229,16 @@ export function SupportChatbot() {
               type="text"
               value={input}
               onChange={(event) => setInput(event.target.value)}
-              placeholder="Escribe tu consulta…"
+              placeholder={t.chatPlaceholder}
               className="min-w-0 flex-1 border border-black/15 bg-white px-3 py-2 text-sm outline-none focus-visible:border-primary"
-              aria-label="Mensaje"
+              aria-label={t.talk}
             />
             <Button
               type="submit"
               size="icon"
               disabled={typing || !input.trim()}
               className="shrink-0 rounded-none bg-primary hover:bg-primary/90"
-              aria-label="Enviar"
+              aria-label={t.talk}
             >
               <Send className="size-4" />
             </Button>
@@ -240,7 +254,7 @@ export function SupportChatbot() {
           open && "max-md:hidden"
         )}
         onClick={() => setOpen((prev) => !prev)}
-        aria-label={open ? "Cerrar asistente" : "Abrir asistente"}
+        aria-label={open ? t.navClose : t.openChat}
         aria-expanded={open}
       >
         {open ? <X className="size-6" /> : <MessageCircle className="size-6" />}

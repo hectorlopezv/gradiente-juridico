@@ -1,6 +1,3 @@
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-
 export function LegalDoc({
   kicker,
   title,
@@ -13,9 +10,7 @@ export function LegalDoc({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <Header />
-      <main className="overflow-x-hidden bg-white">
+    <main className="overflow-x-hidden bg-white">
         <section className="bg-black pt-28 text-white lg:pt-32">
           <div className="mx-auto max-w-[900px] px-4 py-16 sm:px-6 lg:py-20">
             <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-white/60">
@@ -33,8 +28,6 @@ export function LegalDoc({
           {children}
         </article>
       </main>
-      <Footer />
-    </>
   );
 }
 

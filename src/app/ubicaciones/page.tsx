@@ -1,27 +1,33 @@
 import Image from "next/image";
-import Link from "next/link";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { ChatCta } from "@/components/chat-cta";
 import { CtaLink } from "@/components/cta-link";
+import { LocaleLink } from "@/components/language-switch";
 import { Reveal } from "@/components/reveal";
-import { services } from "@/lib/data";
-import { offices } from "@/lib/locations";
+import { listServices } from "@/lib/data";
+import { getLocale } from "@/lib/locale-server";
+import { prefixHref } from "@/lib/locale";
+import { listOffices } from "@/lib/locations";
+import { messages } from "@/lib/messages";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({
-  title: "Ubicaciones",
-  description:
-    "Gradiente Jurídico opera desde Colombia. Reuniones presenciales con cita u online para asuntos de propiedad intelectual.",
-  path: "/ubicaciones",
-});
+export async function generateMetadata() {
+  const locale = await getLocale();
+  const t = messages(locale);
+  return pageMeta({
+    title: t.locations,
+    description: t.locationsMetaDesc,
+    path: prefixHref("/ubicaciones", locale),
+  });
+}
 
-export default function UbicacionesPage() {
-  const office = offices[0];
+export default async function UbicacionesPage() {
+  const locale = await getLocale();
+  const t = messages(locale);
+  const office = listOffices(locale)[0];
+  const practice = listServices(locale);
 
   return (
     <>
-      <Header />
       <main className="overflow-x-hidden">
         <section className="relative min-h-[70svh] overflow-hidden bg-black pt-24 text-white">
           <Image
@@ -44,7 +50,7 @@ export default function UbicacionesPage() {
               {office.intro}
             </p>
             <div className="animate-fade-up mt-8">
-              <ChatCta>Hablemos</ChatCta>
+              <ChatCta>{t.letsTalk}</ChatCta>
             </div>
           </div>
         </section>
@@ -52,7 +58,7 @@ export default function UbicacionesPage() {
         <section id="contenido" className="bg-white py-16 lg:py-24">
           <div className="mx-auto max-w-[800px] px-4 sm:px-6">
             <h2 className="font-heading text-3xl font-semibold uppercase tracking-wide">
-              Cómo operamos
+              {t.howWeOperate}
             </h2>
             {office.overview.map((paragraph) => (
               <p
@@ -68,10 +74,10 @@ export default function UbicacionesPage() {
         <section className="border-t border-black/10 bg-white py-16 lg:py-24">
           <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-10">
             <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Atención
+              {t.attention}
             </p>
             <h2 className="mt-4 font-heading text-3xl font-semibold uppercase tracking-wide sm:text-4xl">
-              Presencial y online
+              {t.inPersonOnline}
             </h2>
             <div className="mt-12 grid gap-10 md:grid-cols-3">
               {office.modes.map((mode, index) => (
@@ -109,25 +115,26 @@ export default function UbicacionesPage() {
         <section className="bg-white py-16 lg:py-24">
           <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-10">
             <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Desde esta sede
+              {t.fromThisOffice}
             </p>
             <h2 className="mt-4 font-heading text-3xl font-semibold uppercase tracking-wide">
-              Áreas de práctica
+              {t.practiceAreas}
             </h2>
             <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {services.map((service) => (
+              {practice.map((service) => (
                 <li key={service.slug}>
-                  <Link
+                  <LocaleLink
                     href={`/practica/${service.slug}`}
+                    locale={locale}
                     className="block border-t border-black/10 pt-4 text-[17px] hover:text-primary"
                   >
                     {service.title}
-                  </Link>
+                  </LocaleLink>
                 </li>
               ))}
             </ul>
-            <CtaLink href="/practica" variant="red" className="mt-10">
-              Ver la práctica
+            <CtaLink href="/practica" variant="red" className="mt-10" locale={locale}>
+              {t.seePractice}
             </CtaLink>
           </div>
         </section>
@@ -135,13 +142,12 @@ export default function UbicacionesPage() {
         <section className="bg-primary">
           <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-6 px-4 py-10 sm:px-6 lg:flex-row lg:items-center lg:px-10">
             <p className="max-w-2xl font-heading text-2xl font-semibold uppercase tracking-wide text-white sm:text-3xl">
-              Cuéntanos el activo. Coordinamos la reunión.
+              {t.tellUsAsset}
             </p>
-            <ChatCta className="shrink-0">Hablemos</ChatCta>
+            <ChatCta className="shrink-0">{t.letsTalk}</ChatCta>
           </div>
         </section>
       </main>
-      <Footer />
     </>
   );
 }

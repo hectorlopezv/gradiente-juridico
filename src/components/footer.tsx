@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Mail, Rss } from "lucide-react";
 import { CookiePreferencesLink } from "@/components/cookie-preferences-link";
 import { brand } from "@/lib/data";
+import { messages } from "@/lib/messages";
+import { prefixHref, type Locale } from "@/lib/locale";
 
 const social = [
   {
@@ -15,7 +17,7 @@ const social = [
     ),
   },
   {
-    label: "Correo",
+    label: "Email",
     href: `mailto:${brand.email}`,
     icon: <Mail className="size-5" strokeWidth={1.5} />,
   },
@@ -37,17 +39,17 @@ const social = [
   },
 ];
 
-const legalLinks = [
-  { label: "Avisos legales", href: "/avisos-legales" },
-  { label: "Privacidad y cookies", href: "/privacidad" },
-  { label: "Divulgaciones CCPA", href: "/ccpa" },
-  { label: "Código de proveedores", href: "/codigo-proveedores" },
-  { label: "Prensa", href: "/prensa" },
-  { label: "RSS", href: "/rss-landing" },
-  { label: "Ubicaciones", href: "/ubicaciones" },
-];
-
-export function Footer() {
+export function Footer({ locale = "es" }: { locale?: Locale }) {
+  const t = messages(locale);
+  const legal = [
+    { label: t.legalNotices, href: "/avisos-legales" },
+    { label: t.privacy, href: "/privacidad" },
+    { label: t.ccpa, href: "/ccpa" },
+    { label: t.suppliers, href: "/codigo-proveedores" },
+    { label: t.press, href: "/prensa" },
+    { label: "RSS", href: "/rss-landing" },
+    { label: t.locations, href: "/ubicaciones" },
+  ];
   return (
     <footer className="bg-black text-white">
       <div className="mx-auto max-w-[1400px] px-4 pb-7 pt-10 sm:px-6 sm:pb-8 sm:pt-12 lg:px-10">
@@ -72,22 +74,22 @@ export function Footer() {
           aria-label="Enlaces legales"
           className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3 text-[13px] text-white"
         >
-          {legalLinks.map((item) => (
+          {legal.map((item) => (
             <Link
               key={item.label}
-              href={item.href}
+              href={prefixHref(item.href, locale)}
               className="hover:underline"
             >
               {item.label}
             </Link>
           ))}
-          <CookiePreferencesLink className="text-left text-[13px] text-white hover:underline" />
+          <CookiePreferencesLink locale={locale} className="text-left text-[13px] text-white hover:underline" />
         </nav>
       </div>
 
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-[1400px] px-4 pb-4 pt-3 text-[12px] text-white/55 sm:px-6 lg:px-10">
-          Publicidad de servicios jurídicos · © {new Date().getFullYear()}{" "}
+          {t.copyright} · © {new Date().getFullYear()}{" "}
           Gradiente Jurídico
         </div>
       </div>

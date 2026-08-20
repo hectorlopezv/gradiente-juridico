@@ -1,10 +1,13 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { ChatCta } from "@/components/chat-cta";
 import { CtaLink } from "@/components/cta-link";
+import { LocaleLink } from "@/components/language-switch";
+import type { Locale } from "@/lib/locale";
+import { messages } from "@/lib/messages";
 
 export function AreaPage({
+  locale = "es",
   kicker,
   title,
   description,
@@ -23,6 +26,7 @@ export function AreaPage({
   relatedIndexHref,
   relatedIndexLabel,
 }: {
+  locale?: Locale;
   kicker: string;
   title: string;
   description: string;
@@ -41,6 +45,7 @@ export function AreaPage({
   relatedIndexHref: string;
   relatedIndexLabel: string;
 }) {
+  const t = messages(locale);
   return (
     <main className="overflow-x-hidden">
       <section className="relative min-h-[48svh] overflow-hidden bg-black pt-24 text-white lg:min-h-[56svh]">
@@ -70,14 +75,14 @@ export function AreaPage({
         <div className="mx-auto grid max-w-[1400px] gap-16 px-4 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:px-10">
           <div>
             <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              En Colombia
+              {t.inColombia}
             </p>
             <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
               {framework}
             </p>
 
             <h2 className="mt-12 font-heading text-2xl font-semibold uppercase tracking-wide">
-              Cómo te ayudamos
+              {t.howWeHelp}
             </h2>
             {context.map((paragraph) => (
               <p
@@ -89,7 +94,7 @@ export function AreaPage({
             ))}
 
             <h2 className="mt-12 font-heading text-2xl font-semibold uppercase tracking-wide">
-              Cuándo tiene sentido
+              {t.whenItFits}
             </h2>
             <ul className="mt-6 divide-y divide-black/10 border-t border-black/10">
               {when.map((item) => (
@@ -100,7 +105,7 @@ export function AreaPage({
             </ul>
 
             <h2 className="mt-12 font-heading text-2xl font-semibold uppercase tracking-wide">
-              Cómo lo trabajamos
+              {t.howWeWork}
             </h2>
             <ol className="mt-6 space-y-4">
               {process.map((item, index) => (
@@ -114,7 +119,7 @@ export function AreaPage({
             </ol>
 
             <h2 className="mt-12 font-heading text-2xl font-semibold uppercase tracking-wide">
-              Lo que suele llegar
+              {t.whatUsuallyArrives}
             </h2>
             <ul className="mt-6 divide-y divide-black/10 border-t border-black/10">
               {typicalIssues.map((item) => (
@@ -126,7 +131,7 @@ export function AreaPage({
 
             <article className="mt-12 border-t border-black/10 pt-10">
               <h2 className="font-heading text-2xl font-semibold uppercase tracking-wide">
-                Para quién
+                {t.forWhom}
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
                 {audience}
@@ -134,8 +139,7 @@ export function AreaPage({
             </article>
 
             <p className="mt-10 text-sm leading-relaxed text-muted-foreground">
-              Este texto describe el marco general en Colombia. No es asesoría
-              jurídica ni sustituye un encargo sobre hechos concretos.
+              {t.areaDisclaimer}
             </p>
             <ChatCta variant="red" className="mt-8">
               {ctaLabel}
@@ -143,7 +147,7 @@ export function AreaPage({
           </div>
           <div>
             <h2 className="font-heading text-2xl font-semibold uppercase tracking-wide">
-              Qué cubre
+              {t.whatItCovers}
             </h2>
             <ul className="mt-6 divide-y divide-black/10 border-t border-black/10">
               {includes.map((item) => (
@@ -153,7 +157,7 @@ export function AreaPage({
               ))}
             </ul>
             {sidebarExtra}
-            <CtaLink href={relatedIndexHref} variant="dark" className="mt-10">
+            <CtaLink href={relatedIndexHref} variant="dark" className="mt-10" locale={locale}>
               {relatedIndexLabel}
             </CtaLink>
           </div>
@@ -168,14 +172,14 @@ export function AreaPage({
           <ul className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="group block">
+                <LocaleLink href={item.href} locale={locale} className="group block">
                   <h3 className="font-heading text-xl font-semibold uppercase tracking-wide group-hover:text-primary">
                     {item.title}
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     {item.description}
                   </p>
-                </Link>
+                </LocaleLink>
               </li>
             ))}
           </ul>

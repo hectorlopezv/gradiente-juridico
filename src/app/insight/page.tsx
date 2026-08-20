@@ -1,60 +1,35 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { InsightFeed } from "@/components/insight-feed";
 import { PageHero } from "@/components/page-hero";
-import { Reveal } from "@/components/reveal";
-import { successCases } from "@/lib/cases";
+import { INSIGHT_PAGE_SIZE, paginateInsights } from "@/lib/insights";
+import { getLocale } from "@/lib/locale-server";
+import { messages } from "@/lib/messages";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({
-  title: "Insight",
-  description:
-    "Análisis de propiedad intelectual en Colombia: marcas, software, IA y gestión del activo. Lectura de criterios, no asesoría legal.",
-  path: "/insight",
-});
+export async function generateMetadata() {
+  const locale = await getLocale();
+  const t = messages(locale);
+  return pageMeta({
+    title: "Insight",
+    description: t.insightMetaDesc,
+    path: locale === "en" ? "/en/insight" : "/insight",
+  });
+}
 
-export default function InsightPage() {
+export default async function InsightPage() {
+  const locale = await getLocale();
+  const t = messages(locale);
+  const { items, total } = paginateInsights(locale, 1, INSIGHT_PAGE_SIZE);
+
   return (
-    <>
-      <Header />
-      <main className="overflow-x-hidden">
-        <PageHero
-          kicker="Insight"
-          title="Insight"
-          description="Análisis sobre marcas, software, IA y el marco colombiano (SIC, DNDA). El método de trabajo se ilustra de forma anonimizada; esto no sustituye un encargo."
-        />
-        <section id="contenido" className="bg-white py-16 lg:py-24">
-          <div className="mx-auto grid max-w-[1400px] gap-x-8 gap-y-16 px-4 sm:px-6 md:grid-cols-2 lg:px-10">
-            {successCases.map((item, index) => (
-              <Reveal key={item.slug} delay={index * 80}>
-                <Link href={`/insight/${item.slug}`} className="group block">
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <Image
-                      src={item.image}
-                      alt=""
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      sizes="(min-width: 768px) 50vw, 100vw"
-                    />
-                  </div>
-                  <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    {item.kicker}
-                  </p>
-                  <h2 className="mt-2 font-heading text-2xl font-semibold uppercase leading-snug tracking-wide group-hover:text-primary sm:text-3xl">
-                    {item.title}
-                  </h2>
-                  <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-                    {item.summary}
-                  </p>
-                  <span className="cta-link cta-link-red mt-5">Leer más</span>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+    <main className="overflow-x-hidden">
+      <PageHero
+        kicker="Insight"
+        title="Insight"
+        description={t.insightPageDesc}
+      />
+      <section id="contenido" className="bg-white py-16 lg:py-24">
+        <InsightFeed initial={items} total={total} locale={locale} />
+      </section>
+    </main>
   );
 }

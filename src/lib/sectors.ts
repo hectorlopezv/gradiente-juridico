@@ -1,3 +1,5 @@
+import { sectorsEn } from "@/lib/content-en";
+import type { Locale } from "@/lib/locale";
 import { media } from "@/lib/media";
 
 export interface Sector {
@@ -60,7 +62,7 @@ export const sectors: Sector[] = [
       "patentes-de-invencion",
       "disenos-industriales",
       "derechos-de-autor",
-      "asesoramiento-estrategico",
+      "contratos-y-negocios",
     ],
     image: media.corporate,
   },
@@ -105,7 +107,7 @@ export const sectors: Sector[] = [
     serviceSlugs: [
       "patentes-de-invencion",
       "derechos-de-autor",
-      "asesoramiento-estrategico",
+      "contratos-y-negocios",
     ],
     image: media.techCircuit,
   },
@@ -150,12 +152,21 @@ export const sectors: Sector[] = [
     serviceSlugs: [
       "registro-de-marcas",
       "derechos-de-autor",
-      "asesoramiento-estrategico",
+      "sociedades-y-gobierno-corporativo",
+      "contratos-y-negocios",
     ],
     image: media.opportunity,
   },
 ];
 
-export function getSector(slug: string) {
-  return sectors.find((sector) => sector.slug === slug);
+export function listSectors(locale: Locale = "es"): Sector[] {
+  if (locale !== "en") return sectors;
+  return sectors.map((sector) => ({
+    ...sector,
+    ...sectorsEn[sector.slug],
+  }));
+}
+
+export function getSector(slug: string, locale: Locale = "es") {
+  return listSectors(locale).find((sector) => sector.slug === slug);
 }

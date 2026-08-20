@@ -4,7 +4,7 @@ import { siteUrl } from "@/lib/rss";
 
 export const SITE_NAME = "Gradiente Jurídico";
 export const SITE_TAGLINE =
-  "Especialistas en Propiedad Intelectual. Protegemos tus ideas. Potenciamos tu futuro.";
+  "Especialistas en empresa y propiedad intelectual. El derecho de crear.";
 export const DEFAULT_OG_PATH = media.og;
 
 type OgType = "website" | "article" | "profile";

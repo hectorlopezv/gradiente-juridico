@@ -9,12 +9,15 @@ import {
   readConsent,
   writeConsent,
 } from "@/lib/consent";
+import { prefixHref, type Locale } from "@/lib/locale";
+import { messages } from "@/lib/messages";
 
 function setCookieOffset(px: number) {
   document.documentElement.style.setProperty("--cookie-h", `${px}px`);
 }
 
-export function CookieBanner() {
+export function CookieBanner({ locale = "es" }: { locale?: Locale }) {
+  const t = messages(locale);
   const [visible, setVisible] = useState(false);
   const [manage, setManage] = useState(false);
   const [analytics, setAnalytics] = useState(false);
@@ -80,13 +83,13 @@ export function CookieBanner() {
               id="cookie-title"
               className="font-heading text-lg font-semibold uppercase tracking-wide text-foreground sm:text-xl"
             >
-              Acerca de su privacidad
+              {t.cookieTitle}
             </h2>
             <button
               type="button"
               className="shrink-0 text-foreground/60 hover:text-foreground lg:hidden"
               onClick={() => persist(false)}
-              aria-label="Rechazar cookies opcionales"
+              aria-label={t.cookieReject}
             >
               <X className="size-4" />
             </button>
@@ -95,13 +98,12 @@ export function CookieBanner() {
             id="cookie-desc"
             className="mt-2 text-sm leading-relaxed text-muted-foreground"
           >
-            Usamos cookies estrictamente necesarias para que el sitio funcione
-            (por ejemplo, recordar esta elección). La medición de visitas con
-            Google Analytics solo se activa si usted lo autoriza de forma
-            expresa, de acuerdo con la Ley 1581 de 2012. Puede cambiar su
-            decisión cuando quiera.{" "}
-            <Link href="/privacidad" className="text-primary underline-offset-2 hover:underline">
-              Política de privacidad y cookies
+            {t.cookieBody}{" "}
+            <Link
+              href={prefixHref("/privacidad", locale)}
+              className="text-primary underline-offset-2 hover:underline"
+            >
+              {t.privacy}
             </Link>
             .
           </p>
@@ -117,12 +119,10 @@ export function CookieBanner() {
                 />
                 <span>
                   <span className="font-semibold text-foreground">
-                    Necesarias
+                    {t.cookieNecessary}
                   </span>
                   <span className="mt-1 block text-muted-foreground">
-                    Siempre activas. Guardan su preferencia de cookies y el
-                    funcionamiento básico del sitio. No se usan para
-                    estadísticas.
+                    {t.cookieNecessaryDesc}
                   </span>
                 </span>
               </label>
@@ -135,13 +135,10 @@ export function CookieBanner() {
                 />
                 <span>
                   <span className="font-semibold text-foreground">
-                    Analítica
+                    {t.cookieAnalytics}
                   </span>
                   <span className="mt-1 block text-muted-foreground">
-                    Google Analytics 4: páginas vistas, origen de la visita y
-                    datos técnicos del dispositivo. IP anonimizada. Puede
-                    implicar transferencia a servidores de Google. No se carga
-                    ningún script de medición hasta que usted lo acepte.
+                    {t.cookieAnalyticsDesc}
                   </span>
                 </span>
               </label>
@@ -149,7 +146,7 @@ export function CookieBanner() {
                 className="h-10 rounded-none bg-primary px-4 hover:bg-primary/90"
                 onClick={() => persist(analytics)}
               >
-                Guardar preferencias
+                {t.cookieSave}
               </Button>
             </div>
           )}
@@ -162,25 +159,25 @@ export function CookieBanner() {
             onClick={() => setManage((value) => !value)}
             aria-expanded={manage}
           >
-            Administrar opciones
+            {t.cookieManage}
           </button>
           <Button
             className="h-10 rounded-none bg-primary px-4 hover:bg-primary/90"
             onClick={() => persist(false)}
           >
-            Solo necesarias
+            {t.cookieNecessaryOnly}
           </Button>
           <Button
             className="h-10 rounded-none bg-primary px-4 hover:bg-primary/90"
             onClick={() => persist(true)}
           >
-            Aceptar analítica
+            {t.cookieAcceptAnalytics}
           </Button>
           <button
             type="button"
             className="hidden p-2 text-foreground/60 hover:text-foreground lg:inline-flex"
             onClick={() => persist(false)}
-            aria-label="Rechazar cookies opcionales"
+            aria-label={t.cookieReject}
           >
             <X className="size-4" />
           </button>

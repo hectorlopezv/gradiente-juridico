@@ -1,0 +1,81 @@
+{
+  "name": "pi-en-la-empresa-2025",
+  "publishedAt": "2026-01-05",
+  "image": "/images/strategy.webp",
+  "kicker": {
+    "es": "Estrategia",
+    "en": "Strategy"
+  },
+  "title": {
+    "es": "Innovar no basta: la PI sigue fuera del modelo de negocio",
+    "en": "Innovation is not enough: IP is still outside the business model"
+  },
+  "summary": {
+    "es": "El estudio IP.CO 2025 (PONS IP, 410 empresas) y las cifras de la SIC coinciden: se pide mucha marca y poca gestión. El activo intangible no entra a la planeación; entra cuando ya hay un tercero en Gaceta o un inversionista en la mesa.",
+    "en": "The 2025 IP.CO study (PONS IP, 410 companies) and SIC figures agree: plenty of trademark filings, little management. The intangible enters planning only when a third party appears in the Gazette or an investor is at the table."
+  },
+  "dateLabel": {
+    "es": "Análisis · 2026",
+    "en": "Analysis · 2026"
+  },
+  "sections": [
+    {
+      "title": {
+        "es": "Lo que muestran 2025 y la encuesta",
+        "en": "What 2025 and the survey show"
+      },
+      "paragraphs": [
+        {
+          "es": "Colombia avanzó en volumen de protección, sobre todo de marcas. El estudio IP.CO de PONS IP, con 410 empresas de distintos tamaños y sectores, concluye que reconocer el valor de la PI no equivale a integrarla en el modelo de negocio. Faltan formación de directivos, herramientas prácticas y un interlocutor que una innovación, trámite y explotación.",
+          "en": "Colombia advanced in volume of protection, especially trademarks. PONS IP’s IP.CO study, with 410 companies of different sizes and sectors, concludes that recognizing the value of IP is not the same as integrating it into the business model. What is missing is executive training, practical tools and a counterpart who joins innovation, filings and exploitation."
+        },
+        {
+          "es": "Eso encaja con lo que se ve en boutique: el fundador registra “el logo”, el área de producto lanza sin diseño pedido, y legal aparece cuando hay oposición o una ronda. No es un problema de cultura abstracta: es un problema de inventario.",
+          "en": "That matches what we see in boutique work: the founder files “the logo”, product launches without a design application, and legal appears when there is an opposition or a round. It is not an abstract culture problem: it is an inventory problem."
+        }
+      ]
+    },
+    {
+      "title": {
+        "es": "Un gobierno mínimo del activo",
+        "en": "Minimum governance of the asset"
+      },
+      "paragraphs": [
+        {
+          "es": "Lista de signos, obras, software, diseños y secretos. Titular en la sociedad. Calendario de renovaciones (marcas, diez años) y de vencimientos (diseños, diez años no renovables). Quién autoriza una divulgación que puede tumbar novedad de patente o de diseño.",
+          "en": "A list of signs, works, software, designs and secrets. Owner in the company. A calendar of renewals (trademarks, ten years) and expiries (designs, ten years non-renewable). Who authorizes a disclosure that can destroy patent or design novelty."
+        },
+        {
+          "es": "Vigilancia de Gaceta y de marketplaces. Contratos tipo con agencias y desarrolladores. Eso cabe en una pyme: no requiere un departamento de 40 personas. Requiere que alguien sea dueño de la lista.",
+          "en": "Gazette and marketplace watch. Template contracts with agencies and developers. That fits a SME: it does not require a 40-person department. It requires someone to own the list."
+        }
+      ]
+    },
+    {
+      "title": {
+        "es": "Cómo lo bajamos",
+        "en": "How we bring it down to earth"
+      },
+      "paragraphs": [
+        {
+          "es": "Diagnóstico de portafolio, prioridad de trámites ante SIC y DNDA, secretos con medidas reales, y un protocolo de reacción. El insight no sustituye el encargo: ordena la conversación para no empezar por el formulario equivocado.",
+          "en": "Portfolio diagnosis, priority of SIC and DNDA filings, secrets with real measures, and a reaction protocol. The insight does not replace an engagement: it orders the conversation so you do not start with the wrong form."
+        }
+      ]
+    }
+  ],
+  "takeaways": [
+    {
+      "es": "Volumen de marcas ≠ gestión de PI.",
+      "en": "Trademark volume ≠ IP management."
+    },
+    {
+      "es": "Sin inventario y titular claro, el certificado no se puede explotar.",
+      "en": "Without an inventory and a clear owner, the certificate cannot be exploited."
+    },
+    {
+      "es": "Vigilancia y contratos son parte del activo, no un extra.",
+      "en": "Watch services and contracts are part of the asset, not an extra."
+    }
+  ]
+}

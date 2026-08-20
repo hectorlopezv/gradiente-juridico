@@ -13,10 +13,10 @@ export function Wordmark({
     <Image
       src={inverted ? media.logoLight : media.logo}
       alt="Gradiente Jurídico"
-      width={355}
-      height={160}
+      width={579}
+      height={110}
       priority
-      className={cn("h-9 w-auto sm:h-11 lg:h-[60px]", className)}
+      className={cn("h-[22px] w-auto sm:h-7 lg:h-[36px]", className)}
     />
   );
 }

@@ -1,31 +1,32 @@
-import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
 import { Opportunity } from "@/components/opportunity";
 import { Trending } from "@/components/trending";
 import { StatsBand } from "@/components/stats-band";
 import { FutureFirm } from "@/components/future-firm";
-import { Footer } from "@/components/footer";
+import { getLocale } from "@/lib/locale-server";
+import { messages } from "@/lib/messages";
 import { pageMeta } from "@/lib/seo";
+import { prefixHref } from "@/lib/locale";
 
-export const metadata = pageMeta({
-  title: "Gradiente Jurídico | Propiedad Intelectual",
-  description:
-    "Firma boutique de propiedad intelectual en Colombia. Marcas, patentes, derechos de autor y estrategia para proteger y potenciar tus ideas.",
-  path: "/",
-});
+export async function generateMetadata() {
+  const locale = await getLocale();
+  const t = messages(locale);
+  return pageMeta({
+    title: t.homeMetaTitle,
+    description: t.homeMetaDesc,
+    path: prefixHref("/", locale),
+  });
+}
 
-export default function Home() {
+export default async function Home() {
+  const locale = await getLocale();
   return (
-    <>
-      <Header />
-      <main className="overflow-x-hidden">
-        <Hero />
-        <Opportunity />
-        <Trending />
-        <StatsBand />
-        <FutureFirm />
-      </main>
-      <Footer />
-    </>
+    <main className="overflow-x-hidden">
+      <Hero locale={locale} />
+      <Opportunity locale={locale} />
+      <Trending locale={locale} />
+      <StatsBand locale={locale} />
+      <FutureFirm locale={locale} />
+    </main>
   );
 }
