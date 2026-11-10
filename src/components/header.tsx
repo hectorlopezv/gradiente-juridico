@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Wordmark } from "@/components/wordmark";
-import { LocaleLink } from "@/components/language-switch";
+import { LanguageSwitch, LocaleLink } from "@/components/language-switch";
 import {
   Accordion,
   AccordionContent,
@@ -154,6 +154,14 @@ export function Header({
                 </LocaleLink>
               ))}
               </nav>
+              <LanguageSwitch
+                locale={locale}
+                className={cn(
+                  megaOpen
+                    ? "text-foreground"
+                    : "text-white/85 hover:text-white"
+                )}
+              />
               <Sheet
                 open={mobileOpen}
                 modal={false}
