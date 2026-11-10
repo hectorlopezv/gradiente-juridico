@@ -1,6 +1,6 @@
 import { InsightFeed } from "@/components/insight-feed";
 import { PageHero } from "@/components/page-hero";
-import { INSIGHT_PAGE_SIZE, paginateInsights } from "@/lib/insights";
+import { listInsights } from "@/lib/insights";
 import { getLocale } from "@/lib/locale-server";
 import { messages } from "@/lib/messages";
 import { pageMeta } from "@/lib/seo";
@@ -18,7 +18,7 @@ export async function generateMetadata() {
 export default async function InsightPage() {
   const locale = await getLocale();
   const t = messages(locale);
-  const { items, total } = paginateInsights(locale, 1, INSIGHT_PAGE_SIZE);
+  const catalog = listInsights(locale);
 
   return (
     <main className="overflow-x-hidden">
@@ -28,7 +28,7 @@ export default async function InsightPage() {
         description={t.insightPageDesc}
       />
       <section id="contenido" className="bg-white py-16 lg:py-24">
-        <InsightFeed initial={items} total={total} locale={locale} />
+        <InsightFeed catalog={catalog} locale={locale} />
       </section>
     </main>
   );

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed, Source_Sans_3 } from "next/font/google";
-import { headers } from "next/headers";
 import { Analytics } from "@/components/analytics";
 import { CookieBanner } from "@/components/cookie-banner";
 import { Footer } from "@/components/footer";
@@ -74,17 +73,14 @@ export const viewport = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const pathname = (await headers()).get("x-pathname") || "";
-  const isAdmin =
-    pathname.startsWith("/admin");
   const locale = await getLocale();
-  const insights = isAdmin
-    ? []
-    : listInsights(locale).slice(0, 8).map((item) => ({
-        slug: item.slug,
-        title: item.title,
-        kicker: item.kicker,
-      }));
+  const insights = listInsights(locale)
+    .slice(0, 8)
+    .map((item) => ({
+      slug: item.slug,
+      title: item.title,
+      kicker: item.kicker,
+    }));
 
   return (
     <html
@@ -92,19 +88,13 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={`${sourceSans.variable} ${barlow.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col overflow-x-hidden">
-        {isAdmin ? (
-          children
-        ) : (
-          <>
-            <SiteJsonLd />
-            <Header locale={locale} insights={insights} />
-            {children}
-            <Footer locale={locale} />
-            <SupportChatbot locale={locale} />
-            <CookieBanner locale={locale} />
-            <Analytics />
-          </>
-        )}
+        <SiteJsonLd />
+        <Header locale={locale} insights={insights} />
+        {children}
+        <Footer locale={locale} />
+        <SupportChatbot locale={locale} />
+        <CookieBanner locale={locale} />
+        <Analytics />
       </body>
     </html>
   );

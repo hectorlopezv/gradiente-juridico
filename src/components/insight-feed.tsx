@@ -5,52 +5,34 @@ import Image from "next/image";
 import type { Insight } from "@/lib/insights-shared";
 import { INSIGHT_PAGE_SIZE } from "@/lib/insights-shared";
 import type { Locale } from "@/lib/locale";
-import { prefixHref } from "@/lib/locale";
 import { messages } from "@/lib/messages";
 import { LocaleLink } from "@/components/language-switch";
 
 export function InsightFeed({
-  initial,
-  total,
+  catalog,
   locale,
 }: {
-  initial: Insight[];
-  total: number;
+  catalog: Insight[];
   locale: Locale;
 }) {
   const t = messages(locale);
-  const [items, setItems] = useState(initial);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(initial.length < total);
+  const [visible, setVisible] = useState(INSIGHT_PAGE_SIZE);
+  const loading = false;
+  const hasMore = visible < catalog.length;
+  const items = catalog.slice(0, visible);
   const sentinel = useRef<HTMLDivElement>(null);
 
-  const loadMore = useCallback(async () => {
-    if (loading || !hasMore) return;
-    setLoading(true);
-    const nextPage = page + 1;
-    const res = await fetch(
-      `/api/insights?locale=${locale}&page=${nextPage}`
-    );
-    const data = (await res.json()) as {
-      items: Insight[];
-      hasMore: boolean;
-    };
-    setItems((current) => {
-      const seen = new Set(current.map((item) => item.slug));
-      return [...current, ...data.items.filter((item) => !seen.has(item.slug))];
-    });
-    setPage(nextPage);
-    setHasMore(data.hasMore);
-    setLoading(false);
-  }, [hasMore, loading, locale, page]);
+  const loadMore = useCallback(() => {
+    if (!hasMore) return;
+    setVisible((n) => Math.min(n + INSIGHT_PAGE_SIZE, catalog.length));
+  }, [catalog.length, hasMore]);
 
   useEffect(() => {
     const node = sentinel.current;
     if (!node) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting) void loadMore();
+        if (entries[0]?.isIntersecting) loadMore();
       },
       { rootMargin: "480px" }
     );
@@ -95,16 +77,16 @@ export function InsightFeed({
         <div className="mt-4 flex justify-center">
           <button
             type="button"
-            onClick={() => void loadMore()}
+            onClick={loadMore}
             className="cta-link cta-link-red"
             disabled={loading}
           >
-            {loading ? t.loading : t.loadMore}
+            {t.loadMore}
           </button>
         </div>
       ) : null}
       <p className="sr-only">
-        {items.length} / {total} · page size {INSIGHT_PAGE_SIZE}
+        {items.length} / {catalog.length} · page size {INSIGHT_PAGE_SIZE}
       </p>
     </>
   );

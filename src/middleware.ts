@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 const SKIP =
-  /^\/(?:api|admin|_next|favicon|images|logo-|og\.|apple-|icon|feed\.xml|rss)/;
+  /^\/(?:api|_next|favicon|images|logo-|og\.|apple-|icon|feed\.xml|rss)/;
 
 const SPANISH_COUNTRIES = new Set([
   "AR",

@@ -23,21 +23,6 @@ const nextConfig: NextConfig = {
         destination: "/equipo",
         permanent: true,
       },
-      {
-        source: "/keystatic",
-        destination: "/admin/index.html",
-        permanent: false,
-      },
-      {
-        source: "/keystatic/:path*",
-        destination: "/admin/index.html",
-        permanent: false,
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      { source: "/admin", destination: "/admin/index.html" },
     ];
   },
 };
